@@ -3,6 +3,7 @@ const path = require("node:path");
 const indexRouter = require("./routes/indexRouter");
 const categoriesRouter = require("./routes/categoriesRouter");
 const suppliersRouter = require("./routes/suppliersRouter");
+const itemsRouter = require("./routes/itemsRouter");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/", indexRouter);
 app.use("/categories", categoriesRouter);
 app.use("/suppliers", suppliersRouter);
+app.use("/items", itemsRouter);
 
 app.listen(PORT, () => {
   console.log(`Steelhub is running on http://localhost:${PORT}`);
