@@ -32,8 +32,9 @@
             Category: <%= categories.find(category => category.id ===
             item.category_id).name %>
           </p>
-          <p>Quantity: <%= item.quantity %></p>
           <p>Price: $<%= item.price %></p>
+          <p>Quantity: <%= item.quantity %></p>
+          <p>Supplier: <%= suppliers.find(supplier => supplier.id === item.supplier_id).name %></p>
           <div class="card-buttons">
             <a href="/items/<%= item.id %>/update" class="btn update-btn"
               >Update</a
