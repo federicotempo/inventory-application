@@ -4,28 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SteelHub - Suppliers</title>
-    <link rel="stylesheet" href="/styles/suppliers.css" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="navbar">
       <div class="logo">
-        <h1>SteelHub</h1>
+        <h1>
+          <a href="/home" style="color: inherit; text-decoration: none"
+            >SteelHub</a
+          >
+        </h1>
       </div>
       <nav class="nav-links">
-        <a href="/categories">Categories</a>
-        <a href="/categories/items">Items</a>
-        <a href="/suppliers" class="active">Suppliers</a>
+        <a href="/categories">Categories 💻</a>
+        <a href="/categories/items">Items 📦</a>
+        <a href="/suppliers">Suppliers 🔧</a>
       </nav>
     </header>
 
     <main class="content">
-      <h2>Suppliers</h2>
+      <h2>Suppliers 🔧</h2>
       <div class="cards-container">
         <% suppliers.forEach(supplier => { %>
         <div class="card">
           <h3><%= supplier.name %></h3>
-          <p>Contact: <%= supplier.contact %></p>
-          <p>Email: <%= supplier.email %></p>
+          <p>Contact: <%= supplier.contact_phone %></p>
           <div class="card-buttons">
             <a
               href="/suppliers/<%= supplier.id %>/update"
