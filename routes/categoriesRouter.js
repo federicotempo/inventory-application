@@ -1,9 +1,9 @@
 const { Router } = require("express");
 const itemsRouter = require("./itemsRouter")
-
+const { renderCategories } = require("../controllers/categoriesController")
 const categoriesRouter = Router();
 
-categoriesRouter.get("/");
+categoriesRouter.get("/", renderCategories);
 categoriesRouter.post("/");
 
 categoriesRouter.get("/:id");
