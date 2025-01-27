@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SteelHub - Suppliers</title>
+    <link rel="stylesheet" href="/styles/suppliers.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo">
+        <h1>SteelHub</h1>
+      </div>
+      <nav class="nav-links">
+        <a href="/categories">Categories</a>
+        <a href="/categories/items">Items</a>
+        <a href="/suppliers" class="active">Suppliers</a>
+      </nav>
+    </header>
+
+    <main class="content">
+      <h2>Suppliers</h2>
+      <div class="cards-container">
+        <% suppliers.forEach(supplier => { %>
+        <div class="card">
+          <h3><%= supplier.name %></h3>
+          <p>Contact: <%= supplier.contact %></p>
+          <p>Email: <%= supplier.email %></p>
+          <div class="card-buttons">
+            <a
+              href="/suppliers/<%= supplier.id %>/update"
+              class="btn update-btn"
+              >Update</a
+            >
+            <a
+              href="/suppliers/<%= supplier.id %>/delete"
+              class="btn delete-btn"
+              >Delete</a
+            >
+          </div>
+        </div>
+        <% }); %>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 SteelHub. All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>
