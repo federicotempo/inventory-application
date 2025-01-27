@@ -24,7 +24,7 @@ async function selectItems() {
 
 async function selectSuppliers() {
   try {
-    const suppliers = await pool.query("SELECT * FROM items");
+    const suppliers = await pool.query("SELECT * FROM suppliers");
     console.log("Suppliers selected successfully:", suppliers.rows);
     return suppliers.rows;
   } catch (error) {
