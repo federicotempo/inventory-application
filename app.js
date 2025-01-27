@@ -21,5 +21,5 @@ app.use("/categories", categoriesRouter);
 app.use("/suppliers", suppliersRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`SteelHub is running on http://localhost:${PORT}`);
 });
