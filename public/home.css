@@ -1,0 +1,122 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f5f5f5;
+  color: #2d3e50;
+  line-height: 1.6;
+}
+
+header.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #2d3e50;
+  color: white;
+}
+
+header .logo h1 {
+  font-size: 1.5rem;
+  color: #f39c12;
+}
+
+header .nav-links a {
+  margin-left: 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+header .nav-links a:hover {
+  color: #f39c12;
+}
+
+main.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+}
+
+.card h2 {
+  font-size: 1.5rem;
+  color: #2d3e50;
+  margin-bottom: 15px;
+}
+
+.card p {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 20px;
+}
+
+.card .cta-link {
+  display: inline-block;
+  text-decoration: none;
+  background-color: #f39c12;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.card .cta-link:hover {
+  background-color: #e67e22;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+footer {
+  text-align: center;
+  padding: 15px 0;
+  background-color: #2d3e50;
+  color: white;
+  margin-top: 20px;
+}
+
+footer p {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  header .nav-links a {
+    font-size: 0.9rem;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .card h2 {
+    font-size: 1.3rem;
+  }
+
+  .card p {
+    font-size: 0.9rem;
+  }
+
+  .card .cta-link {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+  }
+}
