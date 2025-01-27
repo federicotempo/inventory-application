@@ -2,4 +2,8 @@ const renderIndex = (req, res) => {
   res.render("index");
 };
 
-module.exports = { renderIndex };
+async function renderHome(req, res) {
+  res.render("home");
+}
+
+module.exports = { renderIndex, renderHome };
