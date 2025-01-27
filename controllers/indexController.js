@@ -2,7 +2,7 @@ const renderIndex = (req, res) => {
   res.render("index");
 };
 
-async function renderHome(req, res) {
+function renderHome(req, res) {
   res.render("home");
 }
 
