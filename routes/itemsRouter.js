@@ -1,10 +1,17 @@
 const { Router } = require("express");
-const { renderItems } = require("../controllers/itemsController");
+const {
+  renderItems,
+  renderForm,
+  addNewItem,
+  validateItem
+} = require("../controllers/itemsController");
 
 const itemsRouter = Router();
 
 itemsRouter.get("/", renderItems);
-itemsRouter.post("/");
+
+itemsRouter.get("/new", renderForm);
+itemsRouter.post("/new", validateItem, addNewItem);
 
 itemsRouter.get("/:itemId");
 itemsRouter.put("/:itemId");

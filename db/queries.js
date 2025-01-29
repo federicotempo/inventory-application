@@ -33,4 +33,17 @@ async function selectSuppliers() {
   }
 }
 
-module.exports = { selectCategories, selectItems, selectSuppliers };
+async function insterItem({ name, category_id, supplier_id, price, quantity }) {
+  try {
+    await pool.query(
+      "INSERT INTO items (name, category_id, supplier_id, price, quantity) VALUES ($1, $2, $3, $4, $5)",
+      [name, category_id, supplier_id, price, quantity]
+    );
+    console.log("Item inserted succesfully!");
+  } catch (error) {
+    console.error("Error inserting item:", error.message);
+    throw error;
+  }
+}
+
+module.exports = { selectCategories, selectItems, selectSuppliers, insterItem };

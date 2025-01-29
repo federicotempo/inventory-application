@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SteelHub - Items</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <header class="navbar">
@@ -34,7 +34,16 @@
           </p>
           <p>Price: $<%= item.price %></p>
           <p>Quantity: <%= item.quantity %></p>
-          <p>Supplier: <%= suppliers.find(supplier => supplier.id === item.supplier_id).name %></p>
+          <p>
+            Supplier: <%= suppliers.find(supplier => supplier.id ===
+            item.supplier_id).name %>
+          </p>
+          <p class="timestamp">
+            Updated: <% if (item.updated_at && item.updated_at !==
+            item.created_at) { %> <%= new Date(item.updated_at).toLocaleString()
+            %> <% } else { %> <%= new Date(item.created_at).toLocaleString() %>
+            <% } %>
+          </p>
           <div class="card-buttons">
             <a href="/items/<%= item.id %>/update" class="btn update-btn"
               >Update</a
