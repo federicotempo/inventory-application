@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SteelHub - Add Item</title>
+  <title>StockFlow | Add Item</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header class="navbar">
     <div class="logo">
       <h1>
-        <a href="/home" style="color: inherit; text-decoration: none">SteelHub</a>
+        <a href="/home" style="color: inherit; text-decoration: none">StockFlow 📦</a>
       </h1>
     </div>
     <nav class="nav-links">
-      <a href="/categories">Categories 💻</a>
-      <a href="/items">Items 📦</a>
-      <a href="/suppliers">Suppliers 🔧</a>
+      <a href="/categories">Categories 📋</a>
+      <a href="/items">Items 🛠️</a>
+      <a href="/suppliers">Suppliers 🏭</a>
     </nav>
   </header>
 
   <main class="content">
-    <h2>Add New Item 📦</h2>
+    <h2 class="page-title">Add New Item 🛠️</h2>
     <form action="/items/new" method="POST" class="form">
       <div class="form-group">
         <label for="name">Item Name:</label>
@@ -52,13 +52,14 @@
         <input type="number" id="quantity" name="quantity" step="1" required>
       </div>
       <div class="form-buttons">
+        <a href="/items" class="btn back-btn">Go Back</a>
         <button type="submit" class="btn submit-btn">Add Item</button>
       </div>
     </form>
   </main>
 
   <footer>
-    <p>&copy; 2025 SteelHub. All Rights Reserved.</p>
+    <p>&copy; 2025 StockFlow. All Rights Reserved.</p>
   </footer>
 </body>
 </html>

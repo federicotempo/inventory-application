@@ -32,6 +32,7 @@ header.navbar {
 
 header .logo h1 {
   color: #f39c12;
+  font-size: 1.5rem;
 }
 
 header .nav-links a {
@@ -43,6 +44,13 @@ header .nav-links a {
 header .nav-links a.active {
   font-weight: bold;
   color: #f39c12;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #2d3e50;
 }
 
 main.content {
@@ -167,3 +175,45 @@ footer {
   color: #888;
   margin-top: 10px;
 }
+
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.new-btn {
+  background-color: #27ae60;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.new-btn:hover {
+  background-color: #219150;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between; 
+  gap: 10px;
+}
+
+.back-btn {
+  background-color: #f39c12;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #e67e22;
+}
+
