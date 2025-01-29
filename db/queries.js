@@ -72,11 +72,50 @@ async function insterCategory({ name, description }) {
   }
 }
 
+async function searchItems(searchTerm) {
+  try {
+    const result = await pool.query("SELECT * FROM items WHERE name ILIKE $1", [
+      `%${searchTerm}%`,
+    ]);
+    return result.rows;
+  } catch (error) {
+    console.error("Error searching items:", error.message);
+    throw error;
+  }
+}
+
+async function searchCategories(searchTerm) {
+  try {
+    const result = await pool.query("SELECT * FROM categories WHERE name ILIKE $1", [
+      `%${searchTerm}%`,
+    ]);
+    return result.rows;
+  } catch (error) {
+    console.error("Error searching categories:", error.message);
+    throw error;
+  }
+}
+
+async function searchSuppliers(searchTerm) {
+  try {
+    const result = await pool.query("SELECT * FROM suppliers WHERE name ILIKE $1", [
+      `%${searchTerm}%`,
+    ]);
+    return result.rows;
+  } catch (error) {
+    console.error("Error searching suppliers:", error.message);
+    throw error;
+  }
+}
+
 module.exports = {
   selectCategories,
   selectItems,
   selectSuppliers,
   insterItem,
   insterSupplier,
-  insterCategory
+  insterCategory,
+  searchItems,
+  searchCategories,
+  searchSuppliers,
 };

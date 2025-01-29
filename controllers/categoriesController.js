@@ -4,7 +4,8 @@ const db = require("../db/queries");
 async function renderCategories(req, res) {
   try {
     const categories = await db.selectCategories();
-    res.render("categories", { categories });
+    const message = "";
+    res.render("categories", { categories, message });
   } catch (error) {
     console.error("Error displaying categories:", error.message);
     res
@@ -50,9 +51,23 @@ async function addNewCategory(req, res) {
   }
 }
 
+async function searchCategories(req, res) {
+  const searchTerm = req.query.search || "";
+  try {
+    const categories = await db.searchCategories(searchTerm);
+    const message =
+      categories.length === 0 ? "No categories found, please try again." : "";
+    res.render("categories", { categories, message });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error searching");
+  }
+}
+
 module.exports = {
   renderCategories,
   renderForm,
   addNewCategory,
   validateCategory,
+  searchCategories,
 };

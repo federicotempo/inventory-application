@@ -4,7 +4,9 @@ const db = require("../db/queries");
 async function renderSuppliers(req, res) {
   try {
     const suppliers = await db.selectSuppliers();
-    res.render("suppliers", { suppliers });
+    const message = '';
+
+    res.render("suppliers", { suppliers, message });
   } catch (error) {
     console.error("Error displaying suppliers:", error.message);
     res
@@ -63,9 +65,23 @@ async function addNewSupplier(req, res) {
   }
 }
 
+async function searchSuppliers(req, res) {
+  const searchTerm = req.query.search || "";
+  try {
+    const suppliers = await db.searchSuppliers(searchTerm);
+    const message =
+      suppliers.length === 0 ? "No suppliers found, please try again." : "";
+    res.render("suppliers", { suppliers, message });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error searching");
+  }
+}
+
 module.exports = {
   renderSuppliers,
   renderForm,
   validateSupplier,
   addNewSupplier,
+  searchSuppliers,
 };

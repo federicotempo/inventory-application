@@ -6,8 +6,9 @@ async function renderItems(req, res) {
     const items = await db.selectItems();
     const categories = await db.selectCategories();
     const suppliers = await db.selectSuppliers();
+    const message = "";
 
-    res.render("items", { items, categories, suppliers });
+    res.render("items", { items, categories, suppliers, message });
   } catch (error) {
     console.error("Error displaying items:", error.message);
     res.status(500).json({ error: "An error occurred while displaying items" });
@@ -75,4 +76,26 @@ async function addNewItem(req, res) {
   }
 }
 
-module.exports = { renderItems, renderForm, addNewItem, validateItem };
+async function searchItems(req, res) {
+  const searchTerm = req.query.search || "";
+  const categories = await db.selectCategories();
+  const suppliers = await db.selectSuppliers();
+  try {
+    const items = await db.searchItems(searchTerm);
+
+    const message =
+      items.length === 0 ? "No items found, please try again." : "";
+    res.render("items", { items, categories, suppliers, message });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error searching");
+  }
+}
+
+module.exports = {
+  renderItems,
+  renderForm,
+  addNewItem,
+  searchItems,
+  validateItem,
+};
