@@ -86,9 +86,10 @@ async function searchItems(searchTerm) {
 
 async function searchCategories(searchTerm) {
   try {
-    const result = await pool.query("SELECT * FROM categories WHERE name ILIKE $1", [
-      `%${searchTerm}%`,
-    ]);
+    const result = await pool.query(
+      "SELECT * FROM categories WHERE name ILIKE $1",
+      [`%${searchTerm}%`]
+    );
     return result.rows;
   } catch (error) {
     console.error("Error searching categories:", error.message);
@@ -98,12 +99,26 @@ async function searchCategories(searchTerm) {
 
 async function searchSuppliers(searchTerm) {
   try {
-    const result = await pool.query("SELECT * FROM suppliers WHERE name ILIKE $1", [
-      `%${searchTerm}%`,
-    ]);
+    const result = await pool.query(
+      "SELECT * FROM suppliers WHERE name ILIKE $1",
+      [`%${searchTerm}%`]
+    );
     return result.rows;
   } catch (error) {
     console.error("Error searching suppliers:", error.message);
+    throw error;
+  }
+}
+
+async function getItemById(id) {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM items WHERE id = $1",
+      [id]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error getting item by id", error.message);
     throw error;
   }
 }
@@ -118,4 +133,5 @@ module.exports = {
   searchItems,
   searchCategories,
   searchSuppliers,
+  getItemById
 };
