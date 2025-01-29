@@ -16,16 +16,40 @@
         </h1>
       </div>
       <nav class="nav-links">
-        <a href="/categories">Categories 📋</a>
-        <a href="/items">Items 🛠️</a>
-        <a href="/suppliers">Suppliers 🏭</a>
+        <a href="/categories">
+          <span class="text">Categories</span>
+          <span class="icon">📋</span>
+        </a>
+        <a href="/items">
+          <span class="text">Items</span>
+          <span class="icon">🛠️</span>
+        </a>
+        <a href="/suppliers">
+          <span class="text">Suppliers</span>
+          <span class="icon">🏭</span>
+        </a>
       </nav>
     </header>
 
     <main class="content">
       <div class="title-container">
-        <h2>Suppliers 🏭</h2>
-        <a href="/suppliers/new" class="btn new-btn">+</a>
+        <div class="new-container">
+          <h2>Suppliers</h2>
+          <span class="icon">🏭</span>
+          <a href="/suppliers/new" class="btn new-btn">+</a>
+        </div>
+        <div class="search-container">
+          <form action="/suppliers/search" method="GET" class="search-form">
+            <input
+              type="text"
+              id="search"
+              name="search"
+              placeholder="Search by name"
+              class="search-input"
+            />
+            <button type="submit" class="btn search-btn">🔍</button>
+          </form>
+        </div>
       </div>
       <div class="cards-container">
         <% suppliers.forEach(supplier => { %>

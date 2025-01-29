@@ -120,3 +120,51 @@ footer p {
     padding: 8px 15px;
   }
 }
+
+.new-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  margin-left: 20px;
+  justify-content: center;
+}
+.nav-links .text {
+  margin-right: 4px;
+  line-height: 1;
+}
+
+.nav-links .text,
+.nav-links .icon {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1
+}
+
+@media (max-width: 767px) {
+  .nav-links {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .nav-links .text {
+    display: none;
+  }
+
+  .nav-links a {
+    justify-content: center;
+    margin-left: 10px;
+  }
+}
