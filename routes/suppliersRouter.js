@@ -1,10 +1,12 @@
 const { Router } = require("express");
-const { renderSuppliers } = require("../controllers/suppliersController");
+const { renderSuppliers, renderForm, addNewSupplier, validateSupplier} = require("../controllers/suppliersController");
 
 const suppliersRouter = Router();
 
 suppliersRouter.get("/", renderSuppliers);
-suppliersRouter.post("/");
+
+suppliersRouter.get("/new", renderForm);
+suppliersRouter.post("/new", validateSupplier, addNewSupplier);
 
 suppliersRouter.get("/:id");
 suppliersRouter.put("/:id");
