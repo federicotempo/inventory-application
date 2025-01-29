@@ -23,5 +23,5 @@ app.use("/suppliers", suppliersRouter);
 app.use("/items", itemsRouter);
 
 app.listen(PORT, () => {
-  console.log(`Steelhub is running on http://localhost:${PORT}`);
+  console.log(`StockFlow is running on http://localhost:${PORT}`);
 });

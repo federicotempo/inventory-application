@@ -1,15 +1,21 @@
 const { Router } = require("express");
-const { renderCategories } = require("../controllers/categoriesController")
+const {
+  renderCategories,
+  renderForm,
+  validateCategory,
+  addNewCategory,
+} = require("../controllers/categoriesController");
 
 const categoriesRouter = Router();
 
 categoriesRouter.get("/", renderCategories);
-categoriesRouter.post("/");
 
-categoriesRouter.get("/:id");
-categoriesRouter.put("/:id");
+categoriesRouter.get("/new", renderForm);
+categoriesRouter.post("/new", validateCategory, addNewCategory);
 
-categoriesRouter.delete("/:id");
+// categoriesRouter.get("/:id");
+// categoriesRouter.put("/:id");
 
+// categoriesRouter.delete("/:id");
 
 module.exports = categoriesRouter;

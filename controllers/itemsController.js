@@ -42,6 +42,7 @@ validateItem = [
     .isInt({ gt: 0 })
     .withMessage("Supplier is required and must be a valid ID"),
   check("price")
+    .trim()
     .isFloat({ gt: 0 })
     .withMessage("Price must be a positive number")
     .custom((value) => {
@@ -51,6 +52,7 @@ validateItem = [
       return true;
     }),
   check("quantity")
+    .trim()
     .isInt({ gt: 0 })
     .withMessage("Quantity must be a positive integer"),
 ];
