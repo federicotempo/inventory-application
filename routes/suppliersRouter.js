@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { renderSuppliers, renderForm, addNewSupplier, validateSupplier, searchSuppliers, renderUpdateSupplier, updateSupplier} = require("../controllers/suppliersController");
+const { renderSuppliers, renderForm, addNewSupplier, validateSupplier, searchSuppliers, renderUpdateSupplier, updateSupplier, deleteSupplier} = require("../controllers/suppliersController");
 
 const suppliersRouter = Router();
 
@@ -14,6 +14,6 @@ suppliersRouter.get("/search", searchSuppliers);
 suppliersRouter.get("/:id/update", renderUpdateSupplier);
 suppliersRouter.post("/:id/update", validateSupplier, updateSupplier);
 
-suppliersRouter.delete("/:id");
+suppliersRouter.post("/:id/delete", deleteSupplier);
 
 module.exports = suppliersRouter;

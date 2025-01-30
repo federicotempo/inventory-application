@@ -131,7 +131,19 @@ async function updateItem(req, res) {
     res.redirect("/items");
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error updating item");
+    res.status(500).json({ error: "Error updating item" });
+  }
+}
+
+async function deleteItem(req, res) {
+  const { id } = req.params;
+
+  try {
+    await db.deleteItem(id);
+    res.redirect("/items");
+  } catch (error) {
+    console.error("Error deleting item:", error.message);
+    res.status(500).json({error: "Error deleting item"})
   }
 }
 
@@ -143,4 +155,5 @@ module.exports = {
   renderUpdateItem,
   validateItem,
   updateItem,
+  deleteItem
 };

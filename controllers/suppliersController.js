@@ -114,7 +114,19 @@ async function updateSupplier(req, res) {
     res.redirect("/suppliers");
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error updating supplier");
+    res.status(500).json({ error: "Error updating supplier" });
+  }
+}
+
+async function deleteSupplier(req, res) {
+  const { id } = req.params;
+
+  try {
+    await db.deleteSupplier(id);
+    res.redirect("/suppliers");
+  } catch (error) {
+    console.error("Error deleting supplier:", error.message);
+    res.status(500).json({error: "Error deleting supplier"})
   }
 }
 
@@ -125,5 +137,6 @@ module.exports = {
   addNewSupplier,
   searchSuppliers,
   renderUpdateSupplier,
-  updateSupplier
+  updateSupplier,
+  deleteSupplier,
 };

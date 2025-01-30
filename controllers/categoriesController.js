@@ -99,7 +99,19 @@ async function updateCategory(req, res) {
     res.redirect("/categories");
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error updating category");
+    res.status(500).json({ error: "Error updating category" });
+  }
+}
+
+async function deleteCategory(req, res) {
+  const { id } = req.params;
+
+  try {
+    await db.deleteCategory(id);
+    res.redirect("/categories");
+  } catch (error) {
+    console.error("Error deleting category:", error.message);
+    res.status(500).json({error: "Error deleting category"})
   }
 }
 
@@ -111,4 +123,5 @@ module.exports = {
   searchCategories,
   renderUpdateCategory,
   updateCategory,
+  deleteCategory,
 };

@@ -2,7 +2,9 @@ const pool = require("./pool");
 
 async function selectCategories() {
   try {
-    const categories = await pool.query("SELECT * FROM categories ORDER BY id ASC");
+    const categories = await pool.query(
+      "SELECT * FROM categories ORDER BY id ASC"
+    );
     console.log("Categories selected successfully:", categories.rows);
     return categories.rows;
   } catch (error) {
@@ -24,7 +26,9 @@ async function selectItems() {
 
 async function selectSuppliers() {
   try {
-    const suppliers = await pool.query("SELECT * FROM suppliers ORDER BY id ASC");
+    const suppliers = await pool.query(
+      "SELECT * FROM suppliers ORDER BY id ASC"
+    );
     console.log("Suppliers selected successfully:", suppliers.rows);
     return suppliers.rows;
   } catch (error) {
@@ -139,7 +143,9 @@ async function updateItem(
 
 async function getCategoryById(id) {
   try {
-    const result = await pool.query("SELECT * FROM categories WHERE id = $1", [id]);
+    const result = await pool.query("SELECT * FROM categories WHERE id = $1", [
+      id,
+    ]);
     return result.rows[0];
   } catch (error) {
     console.error("Error getting category by id", error.message);
@@ -147,10 +153,7 @@ async function getCategoryById(id) {
   }
 }
 
-async function updateCategory(
-  id,
-  { name, description }
-) {
+async function updateCategory(id, { name, description }) {
   try {
     await pool.query(
       `
@@ -166,7 +169,9 @@ async function updateCategory(
 
 async function getSupplierById(id) {
   try {
-    const result = await pool.query("SELECT * FROM suppliers WHERE id = $1", [id]);
+    const result = await pool.query("SELECT * FROM suppliers WHERE id = $1", [
+      id,
+    ]);
     return result.rows[0];
   } catch (error) {
     console.error("Error getting supplier by id", error.message);
@@ -174,10 +179,7 @@ async function getSupplierById(id) {
   }
 }
 
-async function updateSupplier(
-  id,
-  { name, contact_phone, contact_email }
-) {
+async function updateSupplier(id, { name, contact_phone, contact_email }) {
   try {
     await pool.query(
       `
@@ -190,6 +192,34 @@ async function updateSupplier(
     throw error;
   }
 }
+
+async function deleteItem(id) {
+  try {
+    await pool.query("DELETE FROM items WHERE id = $1", [id]);
+  } catch (error) {
+    console.error("Error deleting item", error.message);
+    throw error;
+  }
+}
+
+async function deleteCategory(id) {
+  try {
+    await pool.query("DELETE FROM categories WHERE id = $1", [id]);
+  } catch (error) {
+    console.error("Error deleting category", error.message);
+    throw error;
+  }
+}
+
+async function deleteSupplier(id) {
+  try {
+    await pool.query("DELETE FROM suppliers WHERE id = $1", [id]);
+  } catch (error) {
+    console.error("Error deleting supplier", error.message);
+    throw error;
+  }
+}
+
 
 module.exports = {
   selectCategories,
@@ -207,4 +237,7 @@ module.exports = {
   updateCategory,
   getSupplierById,
   updateSupplier,
+  deleteItem,
+  deleteCategory,
+  deleteSupplier,
 };
