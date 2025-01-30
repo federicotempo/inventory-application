@@ -1,5 +1,5 @@
 # inventory-application
- A CRUD-based inventory management app for an imaginary store, built with Express.js and PostgreSQL.
+A CRUD-based inventory management app for a store, built with Express.js and PostgreSQL.
 
 # Live preview
 
