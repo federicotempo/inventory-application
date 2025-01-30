@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StockFlow | Update Supplier</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo">
+        <h1>
+          <a href="/home" style="color: inherit; text-decoration: none"
+            >StockFlow 📦</a
+          >
+        </h1>
+      </div>
+      <nav class="nav-links">
+        <a href="/categories">
+          <span class="text">Categories</span>
+          <span class="icon">📋</span>
+        </a>
+        <a href="/items">
+          <span class="text">Items</span>
+          <span class="icon">🛠️</span>
+        </a>
+        <a href="/suppliers">
+          <span class="text">Suppliers</span>
+          <span class="icon">🏭</span>
+        </a>
+      </nav>
+    </header>
+
+    <main class="content">
+      <h2 class="page-title">Update Supplier 🏭</h2>
+      <form
+        action="/suppliers/<%= supplier.id %>/update"
+        method="POST"
+        class="form"
+      >
+        <div class="form-group">
+          <label for="name">Supplier Name:</label>
+          <input type="text" id="name" name="name" required maxlength="50" value="<%= supplier.name %>" />
+        </div>
+        <div class="form-group">
+          <label for="contact_phone">Contact Phone:</label>
+          <input
+            type="tel"
+            id="contact_phone"
+            name="contact_phone"
+            required
+            maxlength="15"
+            minlength="7"
+            value="<%= supplier.contact_phone %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="contact_email">Contact Email:</label>
+          <input
+            type="email"
+            id="contact_email"
+            name="contact_email"
+            required
+            maxlength="75"
+            value="<%= supplier.contact_email %>"
+          />
+        </div>
+        <div class="form-buttons">
+          <a href="/suppliers" class="btn back-btn">Go Back</a>
+          <button type="submit" class="btn submit-btn">Update Supplier</button>
+        </div>
+      </form>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 StockFlow. All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>

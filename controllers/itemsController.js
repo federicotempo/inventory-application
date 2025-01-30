@@ -88,7 +88,50 @@ async function searchItems(req, res) {
     res.render("items", { items, categories, suppliers, message });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error searching");
+    res.status(500).json({ error: "Error searching" });
+  }
+}
+
+async function renderUpdateItem(req, res) {
+  const { id } = req.params;
+  const categories = await db.selectCategories();
+  const suppliers = await db.selectSuppliers();
+
+  try {
+    const item = await db.getItemById(id);
+
+    if (!item) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    res.render("update_item", { item, categories, suppliers });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error retrieving item" });
+  }
+}
+
+async function updateItem(req, res) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ error: errors.array() });
+  }
+  const { id } = req.params;
+  const { name, category_id, supplier_id, price, quantity } = req.body;
+
+  try {
+    await db.updateItem(id, {
+      name,
+      category_id,
+      supplier_id,
+      price,
+      quantity,
+    });
+    res.redirect("/items");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating item");
   }
 }
 
@@ -97,5 +140,7 @@ module.exports = {
   renderForm,
   addNewItem,
   searchItems,
+  renderUpdateItem,
   validateItem,
+  updateItem,
 };

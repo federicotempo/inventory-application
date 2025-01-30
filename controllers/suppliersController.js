@@ -78,10 +78,52 @@ async function searchSuppliers(req, res) {
   }
 }
 
+async function renderUpdateSupplier(req, res) {
+  const { id } = req.params;
+
+  try {
+    const supplier = await db.getSupplierById(id);
+
+    if (!supplier) {
+      return res.status(404).json({ error: "Supplier not found" });
+    }
+
+    res.render("update_supplier", { supplier });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error retrieving supplier" });
+  }
+}
+
+async function updateSupplier(req, res) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ error: errors.array() });
+  }
+
+  const { id } = req.params;
+  const { name, contact_phone, contact_email } = req.body;
+
+  try {
+    await db.updateSupplier(id, {
+      name,
+      contact_phone,
+      contact_email
+    });
+    res.redirect("/suppliers");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating supplier");
+  }
+}
+
 module.exports = {
   renderSuppliers,
   renderForm,
   validateSupplier,
   addNewSupplier,
   searchSuppliers,
+  renderUpdateSupplier,
+  updateSupplier
 };

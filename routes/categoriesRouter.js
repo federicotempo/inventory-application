@@ -5,6 +5,8 @@ const {
   validateCategory,
   addNewCategory,
   searchCategories,
+  renderUpdateCategory,
+  updateCategory,
 } = require("../controllers/categoriesController");
 
 const categoriesRouter = Router();
@@ -16,8 +18,9 @@ categoriesRouter.post("/new", validateCategory, addNewCategory);
 
 categoriesRouter.get("/search", searchCategories);
 
+categoriesRouter.get("/:id/update", renderUpdateCategory);
+categoriesRouter.post("/:id/update", validateCategory, updateCategory);
 
-// categoriesRouter.get("/:id");
 // categoriesRouter.put("/:id");
 
 // categoriesRouter.delete("/:id");

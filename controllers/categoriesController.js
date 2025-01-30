@@ -64,10 +64,51 @@ async function searchCategories(req, res) {
   }
 }
 
+async function renderUpdateCategory(req, res) {
+  const { id } = req.params;
+
+  try {
+    const category = await db.getCategoryById(id);
+
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    res.render("update_category", { category });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error retrieving category" });
+  }
+}
+
+async function updateCategory(req, res) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ error: errors.array() });
+  }
+
+  const { id } = req.params;
+  const { name, description } = req.body;
+
+  try {
+    await db.updateCategory(id, {
+      name,
+      description,
+    });
+    res.redirect("/categories");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating category");
+  }
+}
+
 module.exports = {
   renderCategories,
   renderForm,
   addNewCategory,
   validateCategory,
   searchCategories,
+  renderUpdateCategory,
+  updateCategory,
 };

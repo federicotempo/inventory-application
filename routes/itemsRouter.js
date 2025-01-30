@@ -5,6 +5,8 @@ const {
   addNewItem,
   validateItem,
   searchItems,
+  updateItem,
+  renderUpdateItem,
 } = require("../controllers/itemsController");
 
 const itemsRouter = Router();
@@ -16,9 +18,7 @@ itemsRouter.post("/new", validateItem, addNewItem);
 
 itemsRouter.get("/search", searchItems);
 
-itemsRouter.get("/:itemId");
-itemsRouter.put("/:itemId");
-
-itemsRouter.delete("/:itemId");
+itemsRouter.get("/:id/update", renderUpdateItem);
+itemsRouter.post("/:id/update", validateItem, updateItem);
 
 module.exports = itemsRouter;

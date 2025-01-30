@@ -2,7 +2,7 @@ const pool = require("./pool");
 
 async function selectCategories() {
   try {
-    const categories = await pool.query("SELECT * FROM categories");
+    const categories = await pool.query("SELECT * FROM categories ORDER BY id ASC");
     console.log("Categories selected successfully:", categories.rows);
     return categories.rows;
   } catch (error) {
@@ -13,7 +13,7 @@ async function selectCategories() {
 
 async function selectItems() {
   try {
-    const items = await pool.query("SELECT * FROM items");
+    const items = await pool.query("SELECT * FROM items ORDER BY id ASC");
     console.log("Items selected successfully:", items.rows);
     return items.rows;
   } catch (error) {
@@ -24,7 +24,7 @@ async function selectItems() {
 
 async function selectSuppliers() {
   try {
-    const suppliers = await pool.query("SELECT * FROM suppliers");
+    const suppliers = await pool.query("SELECT * FROM suppliers ORDER BY id ASC");
     console.log("Suppliers selected successfully:", suppliers.rows);
     return suppliers.rows;
   } catch (error) {
@@ -112,13 +112,81 @@ async function searchSuppliers(searchTerm) {
 
 async function getItemById(id) {
   try {
-    const result = await pool.query(
-      "SELECT * FROM items WHERE id = $1",
-      [id]
-    );
+    const result = await pool.query("SELECT * FROM items WHERE id = $1", [id]);
     return result.rows[0];
   } catch (error) {
     console.error("Error getting item by id", error.message);
+    throw error;
+  }
+}
+
+async function updateItem(
+  id,
+  { name, category_id, supplier_id, price, quantity }
+) {
+  try {
+    await pool.query(
+      `
+      UPDATE items SET name = $1, category_id = $2, supplier_id = $3, price = $4, quantity = $5, updated_at = NOW()
+      WHERE id = $6`,
+      [name, category_id, supplier_id, price, quantity, id]
+    );
+  } catch (error) {
+    console.error("Error updating item", error.message);
+    throw error;
+  }
+}
+
+async function getCategoryById(id) {
+  try {
+    const result = await pool.query("SELECT * FROM categories WHERE id = $1", [id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error getting category by id", error.message);
+    throw error;
+  }
+}
+
+async function updateCategory(
+  id,
+  { name, description }
+) {
+  try {
+    await pool.query(
+      `
+      UPDATE categories SET name = $1, description = $2, updated_at = NOW()
+      WHERE id = $3`,
+      [name, description, id]
+    );
+  } catch (error) {
+    console.error("Error updating category", error.message);
+    throw error;
+  }
+}
+
+async function getSupplierById(id) {
+  try {
+    const result = await pool.query("SELECT * FROM suppliers WHERE id = $1", [id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error getting supplier by id", error.message);
+    throw error;
+  }
+}
+
+async function updateSupplier(
+  id,
+  { name, contact_phone, contact_email }
+) {
+  try {
+    await pool.query(
+      `
+      UPDATE suppliers SET name = $1, contact_phone = $2, contact_email = $3, updated_at = NOW()
+      WHERE id = $4`,
+      [name, contact_phone, contact_email, id]
+    );
+  } catch (error) {
+    console.error("Error updating supplier", error.message);
     throw error;
   }
 }
@@ -133,5 +201,10 @@ module.exports = {
   searchItems,
   searchCategories,
   searchSuppliers,
-  getItemById
+  getItemById,
+  updateItem,
+  getCategoryById,
+  updateCategory,
+  getSupplierById,
+  updateSupplier,
 };
