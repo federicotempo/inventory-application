@@ -3,7 +3,7 @@ const pool = require("./pool");
 async function selectCategories() {
   try {
     const categories = await pool.query(
-      "SELECT * FROM categories ORDER BY id ASC"
+      "SELECT id, name, description FROM categories ORDER BY id ASC"
     );
     console.log("Categories selected successfully:", categories.rows);
     return categories.rows;
@@ -15,7 +15,9 @@ async function selectCategories() {
 
 async function selectItems() {
   try {
-    const items = await pool.query("SELECT * FROM items ORDER BY id ASC");
+    const items = await pool.query(
+      "SELECT id, name, category_id, price, quantity, supplier_id, created_at, updated_at FROM items ORDER BY id ASC"
+    );
     console.log("Items selected successfully:", items.rows);
     return items.rows;
   } catch (error) {
@@ -27,7 +29,7 @@ async function selectItems() {
 async function selectSuppliers() {
   try {
     const suppliers = await pool.query(
-      "SELECT * FROM suppliers ORDER BY id ASC"
+      "SELECT id, name, contact_phone, contact_email FROM suppliers ORDER BY id ASC"
     );
     console.log("Suppliers selected successfully:", suppliers.rows);
     return suppliers.rows;
@@ -78,7 +80,7 @@ async function insterCategory({ name, description }) {
 
 async function searchItems(searchTerm) {
   try {
-    const result = await pool.query("SELECT * FROM items WHERE name ILIKE $1", [
+    const result = await pool.query("SELECT name, category_id, price, quantity, supplier_id, created_at, updated_at FROM items WHERE name ILIKE $1", [
       `%${searchTerm}%`,
     ]);
     return result.rows;
@@ -91,7 +93,7 @@ async function searchItems(searchTerm) {
 async function searchCategories(searchTerm) {
   try {
     const result = await pool.query(
-      "SELECT * FROM categories WHERE name ILIKE $1",
+      "SELECT name, description FROM categories WHERE name ILIKE $1",
       [`%${searchTerm}%`]
     );
     return result.rows;
@@ -104,7 +106,7 @@ async function searchCategories(searchTerm) {
 async function searchSuppliers(searchTerm) {
   try {
     const result = await pool.query(
-      "SELECT * FROM suppliers WHERE name ILIKE $1",
+      "SELECT name, contact_phone, contact_email FROM suppliers WHERE name ILIKE $1",
       [`%${searchTerm}%`]
     );
     return result.rows;
@@ -116,7 +118,7 @@ async function searchSuppliers(searchTerm) {
 
 async function getItemById(id) {
   try {
-    const result = await pool.query("SELECT * FROM items WHERE id = $1", [id]);
+    const result = await pool.query("SELECT id, name, price, quantity, supplier_id, category_id, created_at, updated_at FROM items WHERE id = $1", [id]);
     return result.rows[0];
   } catch (error) {
     console.error("Error getting item by id", error.message);
@@ -143,7 +145,7 @@ async function updateItem(
 
 async function getCategoryById(id) {
   try {
-    const result = await pool.query("SELECT * FROM categories WHERE id = $1", [
+    const result = await pool.query("SELECT name, description FROM categories WHERE id = $1", [
       id,
     ]);
     return result.rows[0];
@@ -169,7 +171,7 @@ async function updateCategory(id, { name, description }) {
 
 async function getSupplierById(id) {
   try {
-    const result = await pool.query("SELECT * FROM suppliers WHERE id = $1", [
+    const result = await pool.query("SELECT name, contact_phone, contact_email FROM suppliers WHERE id = $1", [
       id,
     ]);
     return result.rows[0];
@@ -219,7 +221,6 @@ async function deleteSupplier(id) {
     throw error;
   }
 }
-
 
 module.exports = {
   selectCategories,
