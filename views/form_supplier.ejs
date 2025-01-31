@@ -40,11 +40,13 @@
       </div>
       <div class="form-group">
         <label for="contact_phone">Contact Phone:</label>
-        <input type="tel" id="contact_phone" name="contact_phone" required maxlength="15" minlength="7">
+        <input type="tel" id="contact_phone" name="contact_phone" required maxlength="15" minlength="7"
+        inputmode="numeric" pattern="+[0-9]">
       </div>
       <div class="form-group">
         <label for="contact_email">Contact Email:</label>
-        <input type="email" id="contact_email" name="contact_email" required maxlength="75">
+        <input type="email" id="contact_email" name="contact_email" required maxlength="75" 
+        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" autocomplete="email">
       </div>
       <div class="form-buttons">
         <a href="/suppliers" class="btn back-btn">Go Back</a>

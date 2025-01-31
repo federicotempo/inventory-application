@@ -41,7 +41,14 @@
       >
         <div class="form-group">
           <label for="name">Supplier Name:</label>
-          <input type="text" id="name" name="name" required maxlength="50" value="<%= supplier.name %>" />
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            maxlength="50"
+            value="<%= supplier.name %>"
+          />
         </div>
         <div class="form-group">
           <label for="contact_phone">Contact Phone:</label>
@@ -52,6 +59,8 @@
             required
             maxlength="15"
             minlength="7"
+            pattern="[0-9]+"
+            inputmode="numeric"
             value="<%= supplier.contact_phone %>"
           />
         </div>
@@ -63,6 +72,8 @@
             name="contact_email"
             required
             maxlength="75"
+            autocomplete="email"
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
             value="<%= supplier.contact_email %>"
           />
         </div>
