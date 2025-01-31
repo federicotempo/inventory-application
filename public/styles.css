@@ -334,3 +334,25 @@ footer {
   box-shadow: none;
   font-size: 1rem;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 10px 0;
+}
+
+.pagination a {
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  background-color: #f39c12;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+  background-color: #e67e22;
+}
