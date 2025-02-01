@@ -42,6 +42,7 @@ app.use("/", indexRouter);
 app.use("/categories", categoriesRouter);
 app.use("/suppliers", suppliersRouter);
 app.use("/items", itemsRouter);
+app.use("/sign-up", authenticationRouter);
 
 app.listen(PORT, () => {
   console.log(`StockFlow is running on http://localhost:${PORT}`);

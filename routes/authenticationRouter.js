@@ -2,8 +2,8 @@ const { Router } = require("express");
 
 const authenticationRouter = Router();
 
-authenticationRouter.get("/sign-up", (req, res) => {
+authenticationRouter.get("/", (req, res) => {
   res.render("sign_up_form");
 });
 
-module.exports = { authenticationRouter };
+module.exports = authenticationRouter;
