@@ -10,6 +10,7 @@ const indexRouter = require("./routes/indexRouter");
 const categoriesRouter = require("./routes/categoriesRouter");
 const suppliersRouter = require("./routes/suppliersRouter");
 const itemsRouter = require("./routes/itemsRouter");
+const authenticationRouter = require("./routes/authenticationRouter");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
