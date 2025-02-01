@@ -1,9 +1,10 @@
 const pool = require("./pool");
 
-async function selectCategories() {
+async function selectCategories({ limit = 3, offset = 0 } = {}) {
   try {
     const categories = await pool.query(
-      "SELECT id, name, description FROM categories ORDER BY id ASC"
+      "SELECT id, name, description FROM categories ORDER BY id ASC LIMIT $1 OFFSET $2",
+      [limit, offset]
     );
     console.log("Categories selected successfully:", categories.rows);
     return categories.rows;
@@ -13,10 +14,11 @@ async function selectCategories() {
   }
 }
 
-async function selectItems() {
+async function selectItems({ limit = 3, offset = 0 } = {}) {
   try {
     const items = await pool.query(
-      "SELECT id, name, category_id, price, quantity, supplier_id, created_at, updated_at FROM items ORDER BY id ASC"
+      "SELECT id, name, category_id, price, quantity, supplier_id, created_at, updated_at FROM items ORDER BY id ASC LIMIT $1 OFFSET $2",
+      [limit, offset]
     );
     console.log("Items selected successfully:", items.rows);
     return items.rows;
@@ -26,10 +28,11 @@ async function selectItems() {
   }
 }
 
-async function selectSuppliers() {
+async function selectSuppliers({ limit = 3, offset = 0 } = {}) {
   try {
     const suppliers = await pool.query(
-      "SELECT id, name, contact_phone, contact_email FROM suppliers ORDER BY id ASC"
+      "SELECT id, name, contact_phone, contact_email FROM suppliers ORDER BY id ASC LIMIT $1 OFFSET $2",
+      [limit, offset]
     );
     console.log("Suppliers selected successfully:", suppliers.rows);
     return suppliers.rows;
@@ -78,11 +81,12 @@ async function insterCategory({ name, description }) {
   }
 }
 
-async function searchItems(searchTerm) {
+async function searchItems({ searchTerm, limit = 3, offset = 0 }) {
   try {
-    const result = await pool.query("SELECT name, category_id, price, quantity, supplier_id, created_at, updated_at FROM items WHERE name ILIKE $1", [
-      `%${searchTerm}%`,
-    ]);
+    const result = await pool.query(
+      "SELECT id, name, category_id, price, quantity, supplier_id, created_at, updated_at FROM items WHERE name ILIKE $1 ORDER BY updated_at ASC LIMIT $2 OFFSET $3",
+      [`%${searchTerm}%`, limit, offset]
+    );
     return result.rows;
   } catch (error) {
     console.error("Error searching items:", error.message);
@@ -90,11 +94,11 @@ async function searchItems(searchTerm) {
   }
 }
 
-async function searchCategories(searchTerm) {
+async function searchCategories({ searchTerm, limit = 3, offset = 0 }) {
   try {
     const result = await pool.query(
-      "SELECT name, description FROM categories WHERE name ILIKE $1",
-      [`%${searchTerm}%`]
+      "SELECT id, name, description FROM categories WHERE name ILIKE $1 ORDER BY updated_at ASC LIMIT $2 OFFSET $3",
+      [`%${searchTerm}%`, limit, offset]
     );
     return result.rows;
   } catch (error) {
@@ -103,11 +107,11 @@ async function searchCategories(searchTerm) {
   }
 }
 
-async function searchSuppliers(searchTerm) {
+async function searchSuppliers({ searchTerm, limit = 3, offset = 0 }) {
   try {
     const result = await pool.query(
-      "SELECT name, contact_phone, contact_email FROM suppliers WHERE name ILIKE $1",
-      [`%${searchTerm}%`]
+      "SELECT id, name, contact_phone, contact_email FROM suppliers WHERE name ILIKE $1 ORDER BY updated_at ASC LIMIT $2 OFFSET $3",
+      [`%${searchTerm}%`, limit, offset]
     );
     return result.rows;
   } catch (error) {
@@ -118,7 +122,10 @@ async function searchSuppliers(searchTerm) {
 
 async function getItemById(id) {
   try {
-    const result = await pool.query("SELECT id, name, price, quantity, supplier_id, category_id, created_at, updated_at FROM items WHERE id = $1", [id]);
+    const result = await pool.query(
+      "SELECT id, name, price, quantity, supplier_id, category_id, created_at, updated_at FROM items WHERE id = $1",
+      [id]
+    );
     return result.rows[0];
   } catch (error) {
     console.error("Error getting item by id", error.message);
@@ -145,9 +152,10 @@ async function updateItem(
 
 async function getCategoryById(id) {
   try {
-    const result = await pool.query("SELECT name, description FROM categories WHERE id = $1", [
-      id,
-    ]);
+    const result = await pool.query(
+      "SELECT name, description FROM categories WHERE id = $1",
+      [id]
+    );
     return result.rows[0];
   } catch (error) {
     console.error("Error getting category by id", error.message);
@@ -171,9 +179,10 @@ async function updateCategory(id, { name, description }) {
 
 async function getSupplierById(id) {
   try {
-    const result = await pool.query("SELECT name, contact_phone, contact_email FROM suppliers WHERE id = $1", [
-      id,
-    ]);
+    const result = await pool.query(
+      "SELECT name, contact_phone, contact_email FROM suppliers WHERE id = $1",
+      [id]
+    );
     return result.rows[0];
   } catch (error) {
     console.error("Error getting supplier by id", error.message);
@@ -222,6 +231,106 @@ async function deleteSupplier(id) {
   }
 }
 
+async function countCategories() {
+  try {
+    return await pool.query("SELECT COUNT(*) FROM categories");
+  } catch (error) {
+    console.error("Error counting categories", error.message);
+    throw error;
+  }
+}
+async function countSuppliers() {
+  try {
+    return await pool.query("SELECT COUNT(*) FROM suppliers");
+  } catch (error) {
+    console.error("Error counting suppliers", error.message);
+    throw error;
+  }
+}
+
+async function countItems() {
+  try {
+    return await pool.query("SELECT COUNT(*) FROM items");
+  } catch (error) {
+    console.error("Error counting items", error.message);
+    throw error;
+  }
+}
+
+async function countSearchItems({ searchTerm } = {}) {
+  try {
+    const query = `
+      SELECT COUNT(*) 
+      FROM items 
+      WHERE name ILIKE $1
+    `;
+    const values = [`%${searchTerm}%`];
+    const result = await pool.query(query, values);
+    return result;
+  } catch (error) {
+    console.error("Error counting search items:", error.message);
+    throw error;
+  }
+}
+
+async function countSearchCategories({ searchTerm } = {}) {
+  try {
+    const query = `
+      SELECT COUNT(*) 
+      FROM categories
+      WHERE name ILIKE $1
+    `;
+    const values = [`%${searchTerm}%`];
+    const result = await pool.query(query, values);
+    return result;
+  } catch (error) {
+    console.error("Error counting search categories:", error.message);
+    throw error;
+  }
+}
+
+async function countSearchSuppliers({ searchTerm } = {}) {
+  try {
+    const query = `
+      SELECT COUNT(*) 
+      FROM suppliers
+      WHERE name ILIKE $1
+    `;
+    const values = [`%${searchTerm}%`];
+    const result = await pool.query(query, values);
+    return result;
+  } catch (error) {
+    console.error("Error counting search suppliers:", error.message);
+    throw error;
+  }
+}
+
+async function getAllCategories() {
+  try {
+    const query = `SELECT id, name, description FROM categories ORDER BY id ASC`;
+    const result = await pool.query(query);
+    return result.rows;
+  } catch (error) {
+    console.error("Error getting all categories:", error.message);
+    throw error;
+  }
+}
+
+async function getAllSuppliers() {
+  try {
+    const query = `
+      SELECT id, name, contact_phone, contact_email 
+      FROM suppliers 
+      ORDER BY id ASC
+    `;
+    const result = await pool.query(query);
+    return result.rows;
+  } catch (error) {
+    console.error("Error getting all suppliers:", error.message);
+    throw error;
+  }
+}
+
 module.exports = {
   selectCategories,
   selectItems,
@@ -241,4 +350,12 @@ module.exports = {
   deleteItem,
   deleteCategory,
   deleteSupplier,
+  countCategories,
+  countSuppliers,
+  countItems,
+  countSearchItems,
+  getAllCategories,
+  getAllSuppliers,
+  countSearchCategories,
+  countSearchSuppliers,
 };

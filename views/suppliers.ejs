@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>StockFlow | Suppliers</title>
     <link rel="stylesheet" href="/styles.css" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
     <header class="navbar">
@@ -71,15 +71,29 @@
               class="btn update-btn"
               >Update</a
             >
-            <form action="/suppliers/<%= supplier.id %>/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this supplier?');">
+            <form
+              action="/suppliers/<%= supplier.id %>/delete"
+              method="POST"
+              onsubmit="return confirm('Are you sure you want to delete this supplier?');"
+            >
               <button type="submit" class="btn delete-btn">🗑️</button>
-              </form>
+            </form>
           </div>
         </div>
         <% }); %>
       </div>
-    </main>
 
+      <div class="pagination">
+        <% if (page > 1) { %>
+        <a href="/suppliers?page=<%= page - 1 %>&limit=3" class="btn"
+          >Previous</a
+        >
+        <% } %> <% if (page < totalPages) { %>
+        <a href="/suppliers?page=<%= page + 1 %>&limit=3" class="btn">Next</a>
+        <% } %>
+      </div>
+
+    </main>
     <footer>
       <p>&copy; 2025 StockFlow. All Rights Reserved.</p>
     </footer>

@@ -84,11 +84,17 @@
 
       <div class="pagination">
         <% if (page > 1) { %>
-        <a href="/categories?page=<%= page - 1 %>&limit=3" class="btn"
+        <a
+          href="/categories/search?search=<%= searchTerm %>&page=<%= page - 1 %>&limit=3"
+          class="btn"
           >Previous</a
         >
         <% } %> <% if (page < totalPages) { %>
-        <a href="/categories?page=<%= page + 1 %>&limit=3" class="btn">Next</a>
+        <a
+          href="/categories/search?search=<%= searchTerm %>&page=<%= page + 1 %>&limit=3"
+          class="btn"
+          >Next</a
+        >
         <% } %>
       </div>
     </main>

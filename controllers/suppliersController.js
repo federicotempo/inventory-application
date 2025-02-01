@@ -3,10 +3,19 @@ const db = require("../db/queries");
 
 async function renderSuppliers(req, res) {
   try {
-    const suppliers = await db.selectSuppliers();
-    const message = '';
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 3;
+    const offset = (page - 1) * limit;
 
-    res.render("suppliers", { suppliers, message });
+    const suppliers = await db.selectSuppliers({ limit, offset });
+
+    const totalResult = await db.countSuppliers();
+    const totalCategories = parseInt(totalResult.rows[0].count);
+    const totalPages = Math.ceil(totalCategories / limit);
+
+    const message = "";
+
+    res.render("suppliers", { suppliers, message, page, totalPages });
   } catch (error) {
     console.error("Error displaying suppliers:", error.message);
     res
@@ -61,17 +70,35 @@ async function addNewSupplier(req, res) {
     res.redirect("/suppliers");
   } catch (error) {
     console.error("Error adding new supplier:", error.message);
-    res.status(500).json({ error: "An error occurred while adding the supplier." });
+    res
+      .status(500)
+      .json({ error: "An error occurred while adding the supplier." });
   }
 }
 
 async function searchSuppliers(req, res) {
   const searchTerm = req.query.search || "";
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 3;
+  const offset = (page - 1) * limit;
+
   try {
-    const suppliers = await db.searchSuppliers(searchTerm);
+    const suppliers = await db.searchSuppliers({ searchTerm, page, offset });
+
+    const totalResult = await db.countSearchSuppliers({ searchTerm });
+    const totalSuppliers = parseInt(totalResult.rows[0].count);
+    const totalPages = Math.ceil(totalSuppliers / limit);
+
     const message =
       suppliers.length === 0 ? "No suppliers found, please try again." : "";
-    res.render("suppliers", { suppliers, message });
+    res.render("suppliers", {
+      suppliers,
+      message,
+      page,
+      totalPages,
+      searchTerm,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Error searching");
@@ -109,7 +136,7 @@ async function updateSupplier(req, res) {
     await db.updateSupplier(id, {
       name,
       contact_phone,
-      contact_email
+      contact_email,
     });
     res.redirect("/suppliers");
   } catch (error) {
@@ -126,7 +153,7 @@ async function deleteSupplier(req, res) {
     res.redirect("/suppliers");
   } catch (error) {
     console.error("Error deleting supplier:", error.message);
-    res.status(500).json({error: "Error deleting supplier"})
+    res.status(500).json({ error: "Error deleting supplier" });
   }
 }
 

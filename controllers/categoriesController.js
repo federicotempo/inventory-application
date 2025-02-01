@@ -3,9 +3,19 @@ const db = require("../db/queries");
 
 async function renderCategories(req, res) {
   try {
-    const categories = await db.selectCategories();
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 3;
+    const offset = (page - 1) * limit;
+
+    const categories = await db.selectCategories({ limit, offset });
+
+    const totalResult = await db.countCategories();
+    const totalCategories = parseInt(totalResult.rows[0].count);
+    const totalPages = Math.ceil(totalCategories / limit);
+
     const message = "";
-    res.render("categories", { categories, message });
+
+    res.render("categories", { categories, message, page, totalPages });
   } catch (error) {
     console.error("Error displaying categories:", error.message);
     res
@@ -53,11 +63,21 @@ async function addNewCategory(req, res) {
 
 async function searchCategories(req, res) {
   const searchTerm = req.query.search || "";
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 3;
+  const offset = (page - 1) * limit;
+
   try {
-    const categories = await db.searchCategories(searchTerm);
+    const categories = await db.searchCategories({ searchTerm, page, offset });
+
+    const totalResult = await db.countSearchCategories({ searchTerm });
+    const totalCategories = parseInt(totalResult.rows[0].count);
+    const totalPages = Math.ceil(totalCategories / limit);
+
     const message =
       categories.length === 0 ? "No categories found, please try again." : "";
-    res.render("categories", { categories, message });
+    res.render("search_categories", { categories, message, page, totalPages, searchTerm });
   } catch (error) {
     console.error(error);
     res.status(500).send("Error searching");
@@ -111,7 +131,7 @@ async function deleteCategory(req, res) {
     res.redirect("/categories");
   } catch (error) {
     console.error("Error deleting category:", error.message);
-    res.status(500).json({error: "Error deleting category"})
+    res.status(500).json({ error: "Error deleting category" });
   }
 }
 

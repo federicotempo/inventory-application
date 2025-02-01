@@ -3,12 +3,28 @@ const db = require("../db/queries");
 
 async function renderItems(req, res) {
   try {
-    const items = await db.selectItems();
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 3;
+    const offset = (page - 1) * limit;
+
+    const items = await db.selectItems({ limit, offset });
     const categories = await db.selectCategories();
     const suppliers = await db.selectSuppliers();
+
+    const totalResult = await db.countItems();
+    const totalCategories = parseInt(totalResult.rows[0].count);
+    const totalPages = Math.ceil(totalCategories / limit);
+
     const message = "";
 
-    res.render("items", { items, categories, suppliers, message });
+    res.render("items", {
+      items,
+      categories,
+      suppliers,
+      message,
+      page,
+      totalPages,
+    });
   } catch (error) {
     console.error("Error displaying items:", error.message);
     res.status(500).json({ error: "An error occurred while displaying items" });
@@ -78,14 +94,31 @@ async function addNewItem(req, res) {
 
 async function searchItems(req, res) {
   const searchTerm = req.query.search || "";
-  const categories = await db.selectCategories();
-  const suppliers = await db.selectSuppliers();
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 3;
+  const offset = (page - 1) * limit;
+
+  const categories = await db.getAllCategories();
+  const suppliers = await db.getAllSuppliers();
   try {
-    const items = await db.searchItems(searchTerm);
+    const items = await db.searchItems({ searchTerm, limit, offset });
+
+    const totalResult = await db.countSearchItems({ searchTerm });
+    const totalItems = parseInt(totalResult.rows[0].count);
+    const totalPages = Math.ceil(totalItems / limit);
 
     const message =
       items.length === 0 ? "No items found, please try again." : "";
-    res.render("items", { items, categories, suppliers, message });
+    res.render("search_items", {
+      items,
+      categories,
+      suppliers,
+      message,
+      page,
+      totalPages,
+      searchTerm
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error searching" });
@@ -143,7 +176,7 @@ async function deleteItem(req, res) {
     res.redirect("/items");
   } catch (error) {
     console.error("Error deleting item:", error.message);
-    res.status(500).json({error: "Error deleting item"})
+    res.status(500).json({ error: "Error deleting item" });
   }
 }
 
@@ -155,5 +188,5 @@ module.exports = {
   renderUpdateItem,
   validateItem,
   updateItem,
-  deleteItem
+  deleteItem,
 };

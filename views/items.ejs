@@ -90,6 +90,17 @@
         </div>
         <% }); %>
       </div>
+      
+      <div class="pagination">
+        <% if (page > 1) { %>
+        <a href="/items?page=<%= page - 1 %>&limit=3" class="btn"
+          >Previous</a
+        >
+        <% } %> <% if (page < totalPages) { %>
+        <a href="/items?page=<%= page + 1 %>&limit=3" class="btn">Next</a>
+        <% } %>
+      </div>
+
     </main>
 
     <footer>
