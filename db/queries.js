@@ -344,6 +344,20 @@ async function insertUser(username, password) {
   }
 }
 
+async function checkUser(username) {
+  try {
+    const query = `
+   SELECT 1 FROM users WHERE username = $1;
+  `;
+
+    const result = await pool.query(query, [username]);
+    return result.rows.length;
+  } catch (error) {
+    console.error("Error checking user", error.message);
+    throw error;
+  }
+}
+
 module.exports = {
   selectCategories,
   selectItems,
@@ -372,4 +386,5 @@ module.exports = {
   countSearchCategories,
   countSearchSuppliers,
   insertUser,
+  checkUser,
 };
