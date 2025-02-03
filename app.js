@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("node:path");
 const session = require("express-session");
-const passport = require("passport");
+const passport = require("./config/passport");
 const pgSession = require("connect-pg-simple")(session);
 const pool = require("./db/pool");
 require("dotenv").config();
@@ -10,7 +10,6 @@ const indexRouter = require("./routes/indexRouter");
 const categoriesRouter = require("./routes/categoriesRouter");
 const suppliersRouter = require("./routes/suppliersRouter");
 const itemsRouter = require("./routes/itemsRouter");
-const authenticationRouter = require("./routes/authenticationRouter");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -37,13 +36,15 @@ app.use(
     cookie: { maxAge: 1000 * 60 * 60 * 24 },
   })
 );
+
+app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/", indexRouter);
 app.use("/categories", categoriesRouter);
 app.use("/suppliers", suppliersRouter);
 app.use("/items", itemsRouter);
-app.use("/sign-up", authenticationRouter);
+
 
 app.listen(PORT, () => {
   console.log(`StockFlow is running on http://localhost:${PORT}`);
