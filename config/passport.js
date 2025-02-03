@@ -38,9 +38,13 @@ passport.deserializeUser(async (id, done) => {
     ]);
     const user = rows[0];
 
+    if (!user) {
+      return done(null, false, { message: "User not found" });
+    }
+
     done(null, user);
   } catch (error) {
-    done(err);
+    done(error);
   }
 });
 
