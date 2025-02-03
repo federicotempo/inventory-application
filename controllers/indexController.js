@@ -1,4 +1,4 @@
-const { insertUser } = require("../db/queries");
+const { insertUser, checkUser } = require("../db/queries");
 const { validationResult, check } = require("express-validator");
 const bcrypt = require("bcryptjs");
 
@@ -7,7 +7,11 @@ const renderIndex = (req, res) => {
 };
 
 function renderHome(req, res) {
-  res.render("home");
+  if(!req.isAuthenticated()) {
+    return res.redirect("/log-in")
+  }
+  
+  res.render("home", {user: req.user});
 }
 
 const validateUser = [
@@ -24,19 +28,13 @@ const validateUser = [
     .notEmpty()
     .withMessage("Password is required")
     .isLength({ min: 8, max: 20 })
-    .withMessage("Username must be between 8 and 20 characters long")
-    .matches(/[A-Z]/)
-    .withMessage("Password must contain at least one uppercase letter")
-    .matches(/[a-z]/)
-    .withMessage("Password must contain at least one lowercase letter")
-    .matches(/\d/)
-    .withMessage("Password must contain at least one number")
-    .matches(/[\W_]/)
-    .withMessage("Password must contain at least one special character"),
+    .withMessage("Username must be between 8 and 20 characters long"),
 ];
 
 const renderSignUpForm = (req, res) => {
-  res.render("sign_up_form");
+  res.render("sign_up_form", {
+    messages: req.flash("error"),
+  });
 };
 
 async function createUser(req, res, next) {
@@ -48,9 +46,17 @@ async function createUser(req, res, next) {
 
   try {
     const username = req.body.username;
+
+    const userRowsLength = await checkUser(username);
+
+    if (userRowsLength > 0) {
+      req.flash("error", "Username already exists");
+      return res.redirect("/sign-up");
+    }
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     await insertUser(username, hashedPassword);
-    res.redirect("/home");
+    res.redirect("/log-in");
   } catch (error) {
     console.error("Error creating new user:", error.message);
     res.status(500).json({ error: "An error occurred while adding the user." });
