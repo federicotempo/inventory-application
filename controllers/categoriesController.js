@@ -15,7 +15,13 @@ async function renderCategories(req, res) {
 
     const message = "";
 
-    res.render("categories", { categories, message, page, totalPages });
+    res.render("categories", {
+      categories,
+      message,
+      page,
+      totalPages,
+      user: req.user,
+    });
   } catch (error) {
     console.error("Error displaying categories:", error.message);
     res
@@ -77,7 +83,14 @@ async function searchCategories(req, res) {
 
     const message =
       categories.length === 0 ? "No categories found, please try again." : "";
-    res.render("search_categories", { categories, message, page, totalPages, searchTerm });
+    res.render("search_categories", {
+      categories,
+      message,
+      page,
+      totalPages,
+      searchTerm,
+      user: req.user,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Error searching");
