@@ -10,10 +10,20 @@
   <body>
     <div class="hero-section">
       <div class="hero-content">
-        <h1>StockFlow 📦</h1>
+        <h1>Sign up 📦</h1>
         <p>Create your account and start managing your inventory today.</p>
 
-        <form action="/signup" method="POST" class="signup-form">
+        <% if (messages.length > 0) { %>
+        <div class="error-message">
+          <ul>
+            <% messages.forEach(function(message) { %>
+            <li><%= message %></li>
+            <% }) %>
+          </ul>
+        </div>
+        <% } %>
+
+        <form action="/sign-up" method="POST" class="signup-form">
           <input
             id="username"
             name="username"
@@ -22,14 +32,12 @@
             required
             minlength="4"
             maxlength="20"
-            pattern="^[a-zA-Z0-9_]+$"
           />
           <input
             type="password"
             id="password"
             name="password"
             placeholder="Password"
-            pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$"
             required
             minlength="8"
             maxlength="20"

@@ -15,7 +15,13 @@ async function renderSuppliers(req, res) {
 
     const message = "";
 
-    res.render("suppliers", { suppliers, message, page, totalPages });
+    res.render("suppliers", {
+      suppliers,
+      message,
+      page,
+      totalPages,
+      user: req.user,
+    });
   } catch (error) {
     console.error("Error displaying suppliers:", error.message);
     res
@@ -92,12 +98,13 @@ async function searchSuppliers(req, res) {
 
     const message =
       suppliers.length === 0 ? "No suppliers found, please try again." : "";
-    res.render("suppliers", {
+    res.render("search_suppliers", {
       suppliers,
       message,
       page,
       totalPages,
       searchTerm,
+      user: req.user,
     });
   } catch (error) {
     console.error(error);
