@@ -1,9 +1,10 @@
 const { Router } = require("express");
+const { renderSignUpForm, createUser, validateUser } = require("../controllers/authenticationController");
 
 const authenticationRouter = Router();
 
-authenticationRouter.get("/", (req, res) => {
-  res.render("sign_up_form");
-});
+authenticationRouter.get("/", renderSignUpForm);
+
+authenticationRouter.post("/", validateUser, createUser);
 
 module.exports = authenticationRouter;

@@ -1,3 +1,4 @@
+const { createUser } = require("../controllers/authenticationController");
 const pool = require("./pool");
 
 async function selectCategories({ limit = 3, offset = 0 } = {}) {
@@ -331,6 +332,18 @@ async function getAllSuppliers() {
   }
 }
 
+async function insertUser({ username, password }) {
+  try {
+    await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
+      username,
+      password,
+    ]);
+  } catch (error) {
+    console.error("Error creating user", error.message);
+    throw error;
+  }
+}
+
 module.exports = {
   selectCategories,
   selectItems,
@@ -358,4 +371,5 @@ module.exports = {
   getAllSuppliers,
   countSearchCategories,
   countSearchSuppliers,
+  insertUser,
 };
