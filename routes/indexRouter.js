@@ -1,10 +1,11 @@
 const { Router } = require("express");
-const { renderIndex, renderHome } = require("../controllers/indexController");
 const {
+  renderIndex,
+  renderHome,
   renderSignUpForm,
   createUser,
   validateUser,
-} = require("../controllers/authenticationController");
+} = require("../controllers/indexController");
 const passport = require("../config/passport");
 
 const indexRouter = Router();

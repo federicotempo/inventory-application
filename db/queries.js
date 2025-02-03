@@ -331,7 +331,7 @@ async function getAllSuppliers() {
   }
 }
 
-async function insertUser({ username, password }) {
+async function insertUser(username, password) {
   try {
     await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
       username,
