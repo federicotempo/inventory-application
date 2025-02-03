@@ -24,6 +24,7 @@ async function renderItems(req, res) {
       message,
       page,
       totalPages,
+      user: req.user,
     });
   } catch (error) {
     console.error("Error displaying items:", error.message);
@@ -117,7 +118,8 @@ async function searchItems(req, res) {
       message,
       page,
       totalPages,
-      searchTerm
+      searchTerm,
+      user: req.user,
     });
   } catch (error) {
     console.error(error);

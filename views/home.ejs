@@ -10,7 +10,7 @@
 <body>
   <header class="navbar">
     <div class="logo">
-      <h1>StockFlow 📦</h1>
+      <h1><%= user ? `${user.username}` : '' %> 📦</h1>
     </div>
     <nav class="nav-links">
       <a href="/categories">
