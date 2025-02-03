@@ -4,6 +4,7 @@ const session = require("express-session");
 const passport = require("./config/passport");
 const pgSession = require("connect-pg-simple")(session);
 const pool = require("./db/pool");
+const flash = require("connect-flash");
 require("dotenv").config();
 
 const indexRouter = require("./routes/indexRouter");
@@ -39,12 +40,12 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 app.use("/", indexRouter);
 app.use("/categories", categoriesRouter);
 app.use("/suppliers", suppliersRouter);
 app.use("/items", itemsRouter);
-
 
 app.listen(PORT, () => {
   console.log(`StockFlow is running on http://localhost:${PORT}`);

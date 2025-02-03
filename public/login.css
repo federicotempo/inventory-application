@@ -98,3 +98,22 @@ p {
     font-size: 1rem;
   }
 }
+
+.error-message {
+  background-color: #f8d7da;  /* Color de fondo suave */
+  color: #721c24;  /* Color de texto oscuro para el error */
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  text-align: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 10px auto;  /* Centrado horizontal */
+  box-sizing: border-box;
+  border: 1px solid #f5c6cb;  /* Borde de color más suave */
+}
+
+.error-message p {
+  margin: 0;
+}

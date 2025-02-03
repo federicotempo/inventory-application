@@ -18,13 +18,17 @@ indexRouter.get("/sign-up", renderSignUpForm);
 indexRouter.post("/sign-up", validateUser, createUser);
 
 indexRouter.get("/log-in", (req, res) => {
-  res.render("log-in", { user: req.user });
+  res.render("log-in", {
+    user: req.user,
+    messages: req.flash("error"),
+  });
 });
 indexRouter.post(
   "/log-in",
   passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/",
+    successRedirect: "/home",
+    failureRedirect: "/log-in",
+    failureFlash: true,
   })
 );
 

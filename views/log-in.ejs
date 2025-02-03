@@ -10,8 +10,14 @@
   <body>
     <div class="hero-section">
       <div class="hero-content">
-        <h1>StockFlow 📦</h1>
+        <h1>Log in 📦</h1>
         <p>Log in to manage your inventory efficiently and seamlessly.</p>
+
+        <% if (messages && messages.length > 0) { %>
+        <div class="error-message">
+          <p><%= messages[0] %></p>
+        </div>
+        <% } %>
 
         <form action="/log-in" method="POST" class="login-form">
           <input
@@ -20,14 +26,12 @@
             placeholder="Username"
             type="text"
             required
-            pattern="^[a-zA-Z0-9_]+$"
           />
           <input
             type="password"
             id="password"
             name="password"
             placeholder="Password"
-            pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$"
             required
           />
           <button type="submit" class="cta-button">Log In</button>
