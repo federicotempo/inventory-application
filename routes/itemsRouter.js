@@ -9,17 +9,18 @@ const {
   renderUpdateItem,
   deleteItem,
 } = require("../controllers/itemsController");
+const ensureAuthenticated = require("../middlewares/auth");
 
 const itemsRouter = Router();
 
-itemsRouter.get("/", renderItems);
+itemsRouter.get("/", ensureAuthenticated, renderItems);
 
-itemsRouter.get("/new", renderForm);
+itemsRouter.get("/new", ensureAuthenticated, renderForm);
 itemsRouter.post("/new", validateItem, addNewItem);
 
-itemsRouter.get("/search", searchItems);
+itemsRouter.get("/search", ensureAuthenticated, searchItems);
 
-itemsRouter.get("/:id/update", renderUpdateItem);
+itemsRouter.get("/:id/update", ensureAuthenticated, renderUpdateItem);
 itemsRouter.post("/:id/update", validateItem, updateItem);
 
 itemsRouter.post("/:id/delete", deleteItem);

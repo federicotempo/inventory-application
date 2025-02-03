@@ -7,11 +7,7 @@ const renderIndex = (req, res) => {
 };
 
 function renderHome(req, res) {
-  if(!req.isAuthenticated()) {
-    return res.redirect("/log-in")
-  }
-  
-  res.render("home", {user: req.user});
+  res.render("home", { user: req.user });
 }
 
 const validateUser = [
