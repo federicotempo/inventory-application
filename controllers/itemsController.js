@@ -37,7 +37,7 @@ async function renderForm(req, res) {
     const categories = await db.selectCategories();
     const suppliers = await db.selectSuppliers();
 
-    res.render("form_item", { categories, suppliers });
+    res.render("form_item", { categories, suppliers, user: req.user });
   } catch (error) {
     console.error("Error displaying form_item", error.message);
     res
@@ -139,7 +139,7 @@ async function renderUpdateItem(req, res) {
       return res.status(404).json({ error: "Item not found" });
     }
 
-    res.render("update_item", { item, categories, suppliers });
+    res.render("update_item", { item, categories, suppliers, user: req.user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error retrieving item" });
