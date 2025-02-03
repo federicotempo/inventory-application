@@ -1,4 +1,3 @@
-const { createUser } = require("../controllers/authenticationController");
 const pool = require("./pool");
 
 async function selectCategories({ limit = 3, offset = 0 } = {}) {
@@ -338,6 +337,7 @@ async function insertUser({ username, password }) {
       username,
       password,
     ]);
+    console.log("User inserted succesfully!");
   } catch (error) {
     console.error("Error creating user", error.message);
     throw error;

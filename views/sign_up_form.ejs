@@ -8,9 +8,11 @@
   <h1>Sign Up</h1>
   <form action="" method="POST">
     <label for="username">Username</label>
-    <input id="username" name="username" placeholder="username" type="text" />
+    <input id="username" name="username" placeholder="Enter your username" type="text" 
+    required minlength="4" maxlength="20" pattern="^[a-zA-Z0-9_]+$"/>
     <label for="password">Password</label>
-    <input id="password" name="password" type="password" />
+    <input id="password" name="password" type="password" required placeholder="Enter your password"
+    minlength="8" maxlength="20" pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$"  >
     <button>Sign Up</button>
   </form>
 </body>

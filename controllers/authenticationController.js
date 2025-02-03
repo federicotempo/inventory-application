@@ -1,4 +1,4 @@
-const db = require("../db/queries");
+const { insertUser } = require("../db/queries");
 const { validationResult, check } = require("express-validator");
 
 const validateUser = [
@@ -39,7 +39,7 @@ async function createUser(req, res) {
 
   try {
     const user = req.body;
-    await db.insertUser(username, password);
+    await insertUser(user);
     res.redirect("/home");
   } catch (error) {
     console.error("Error creating new user:", error.message);
