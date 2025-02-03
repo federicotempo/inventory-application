@@ -98,3 +98,27 @@ p {
     font-size: 1rem;
   }
 }
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #f5c6cb;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.error-message ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.error-message li {
+  font-size: 1rem;
+  margin: 5px 0;
+}
