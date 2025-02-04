@@ -15,7 +15,13 @@ async function renderSuppliers(req, res) {
 
     const message = "";
 
-    res.render("suppliers", { suppliers, message, page, totalPages });
+    res.render("suppliers", {
+      suppliers,
+      message,
+      page,
+      totalPages,
+      user: req.user,
+    });
   } catch (error) {
     console.error("Error displaying suppliers:", error.message);
     res
@@ -25,7 +31,7 @@ async function renderSuppliers(req, res) {
 }
 
 function renderForm(req, res) {
-  res.render("form_supplier");
+  res.render("form_supplier", { user: req.user });
 }
 
 validateSupplier = [
@@ -92,12 +98,13 @@ async function searchSuppliers(req, res) {
 
     const message =
       suppliers.length === 0 ? "No suppliers found, please try again." : "";
-    res.render("suppliers", {
+    res.render("search_suppliers", {
       suppliers,
       message,
       page,
       totalPages,
       searchTerm,
+      user: req.user,
     });
   } catch (error) {
     console.error(error);
@@ -115,7 +122,7 @@ async function renderUpdateSupplier(req, res) {
       return res.status(404).json({ error: "Supplier not found" });
     }
 
-    res.render("update_supplier", { supplier });
+    res.render("update_supplier", { supplier, user: req.user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error retrieving supplier" });

@@ -15,7 +15,13 @@ async function renderCategories(req, res) {
 
     const message = "";
 
-    res.render("categories", { categories, message, page, totalPages });
+    res.render("categories", {
+      categories,
+      message,
+      page,
+      totalPages,
+      user: req.user,
+    });
   } catch (error) {
     console.error("Error displaying categories:", error.message);
     res
@@ -25,7 +31,7 @@ async function renderCategories(req, res) {
 }
 
 function renderForm(req, res) {
-  res.render("form_category");
+  res.render("form_category", { user: req.user });
 }
 
 validateCategory = [
@@ -77,7 +83,14 @@ async function searchCategories(req, res) {
 
     const message =
       categories.length === 0 ? "No categories found, please try again." : "";
-    res.render("search_categories", { categories, message, page, totalPages, searchTerm });
+    res.render("search_categories", {
+      categories,
+      message,
+      page,
+      totalPages,
+      searchTerm,
+      user: req.user,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Error searching");
@@ -94,7 +107,7 @@ async function renderUpdateCategory(req, res) {
       return res.status(404).json({ error: "Category not found" });
     }
 
-    res.render("update_category", { category });
+    res.render("update_category", { category, user: req.user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error retrieving category" });

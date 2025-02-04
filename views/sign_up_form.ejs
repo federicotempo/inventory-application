@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StockFlow | Sign Up</title>
+    <link rel="stylesheet" href="signup.css" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1>Sign up 📦</h1>
+        <p>Create your account and start managing your inventory today.</p>
+
+        <% if (messages.length > 0) { %>
+        <div class="error-message">
+          <ul>
+            <% messages.forEach(function(message) { %>
+            <li><%= message %></li>
+            <% }) %>
+          </ul>
+        </div>
+        <% } %>
+
+        <form action="/sign-up" method="POST" class="signup-form">
+          <input
+            id="username"
+            name="username"
+            placeholder="Username"
+            type="text"
+            required
+            minlength="4"
+            maxlength="20"
+          />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            required
+            minlength="8"
+            maxlength="20"
+          />
+          <button type="submit" class="cta-button">Sign Up</button>
+        </form>
+
+        <p class="login-text">
+          Already have an account?
+          <a href="/log-in" class="login-link">Log In</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,55 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StockFlow | Add Category</title>
-  <link rel="stylesheet" href="/styles.css">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-</head>
-<body>
-  <header class="navbar">
-    <div class="logo">
-      <h1>
-        <a href="/home" style="color: inherit; text-decoration: none">StockFlow 📦</a>
-      </h1>
-    </div>
-    <nav class="nav-links">
-      <a href="/categories">
-        <span class="text">Categories</span>
-        <span class="icon">📋</span>
-      </a>
-      <a href="/items">
-        <span class="text">Items</span>
-        <span class="icon">🛠️</span>
-      </a>
-      <a href="/suppliers">
-        <span class="text">Suppliers</span>
-        <span class="icon">🏭</span>
-      </a>
-    </nav>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StockFlow | Add Category</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo new-container">
+        <h1><%= user ? `${user.username}` : '' %> 📦</h1>
+        <form action="/logout" method="POST">
+          <button type="submit" class="logout-btn">Log out</button>
+        </form>
+      </div>
+      <nav class="nav-links">
+        <a href="/categories">
+          <span class="text">Categories</span>
+          <span class="icon">📋</span>
+        </a>
+        <a href="/items">
+          <span class="text">Items</span>
+          <span class="icon">🛠️</span>
+        </a>
+        <a href="/suppliers">
+          <span class="text">Suppliers</span>
+          <span class="icon">🏭</span>
+        </a>
+      </nav>
+    </header>
 
-  <main class="content">
-    <h2 class="page-title">Add New Category 📋</h2>
-    <form action="/categories/new" method="POST" class="form">
-      <div class="form-group">
-        <label for="name">Category Name:</label>
-        <input type="text" id="name" name="name" required maxlength="50">
-      </div>
-      <div class="form-group">
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" rows="4" maxlength="150"></textarea>
-      </div>
-      <div class="form-buttons">
-        <a href="/categories" class="btn back-btn">Go Back</a>
-        <button type="submit" class="btn submit-btn">Add Category</button>
-      </div>
-    </form>
-  </main>
+    <main class="content">
+      <h2 class="page-title">Add New Category 📋</h2>
+      <form action="/categories/new" method="POST" class="form">
+        <div class="form-group">
+          <label for="name">Category Name:</label>
+          <input type="text" id="name" name="name" required maxlength="50" />
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="4"
+            maxlength="150"
+          ></textarea>
+        </div>
+        <div class="form-buttons">
+          <a href="/categories" class="btn back-btn">Go Back</a>
+          <button type="submit" class="btn submit-btn">Add Category</button>
+        </div>
+      </form>
+    </main>
 
-  <footer>
-    <p>&copy; 2025 StockFlow. All Rights Reserved.</p>
-  </footer>
-</body>
+    <footer>
+      <p>&copy; 2025 StockFlow. All Rights Reserved.</p>
+    </footer>
+  </body>
 </html>

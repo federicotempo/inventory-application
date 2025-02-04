@@ -9,12 +9,11 @@
   </head>
   <body>
     <header class="navbar">
-      <div class="logo">
-        <h1>
-          <a href="/home" style="color: inherit; text-decoration: none"
-            >StockFlow 📦</a
-          >
-        </h1>
+      <div class="logo new-container">
+        <h1><%= user ? `${user.username}` : '' %> 📦</h1>
+        <form action="/logout" method="POST">
+          <button type="submit" class="logout-btn">Log out</button>
+        </form>
       </div>
       <nav class="nav-links">
         <a href="/categories">

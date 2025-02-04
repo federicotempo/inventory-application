@@ -9,17 +9,18 @@ const {
   updateCategory,
   deleteCategory,
 } = require("../controllers/categoriesController");
+const ensureAuthenticated = require("../middlewares/auth");
 
 const categoriesRouter = Router();
 
-categoriesRouter.get("/", renderCategories);
+categoriesRouter.get("/", ensureAuthenticated, renderCategories);
 
-categoriesRouter.get("/new", renderForm);
+categoriesRouter.get("/new", ensureAuthenticated, renderForm);
 categoriesRouter.post("/new", validateCategory, addNewCategory);
 
-categoriesRouter.get("/search", searchCategories);
+categoriesRouter.get("/search", ensureAuthenticated, searchCategories);
 
-categoriesRouter.get("/:id/update", renderUpdateCategory);
+categoriesRouter.get("/:id/update", ensureAuthenticated ,renderUpdateCategory);
 categoriesRouter.post("/:id/update", validateCategory, updateCategory);
 
 categoriesRouter.post("/:id/delete", deleteCategory);

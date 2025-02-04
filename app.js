@@ -1,5 +1,12 @@
 const express = require("express");
 const path = require("node:path");
+const session = require("express-session");
+const passport = require("./config/passport");
+const pgSession = require("connect-pg-simple")(session);
+const pool = require("./db/pool");
+const flash = require("connect-flash");
+require("dotenv").config();
+
 const indexRouter = require("./routes/indexRouter");
 const categoriesRouter = require("./routes/categoriesRouter");
 const suppliersRouter = require("./routes/suppliersRouter");
@@ -16,6 +23,24 @@ app.use(express.static(assetsPath));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    store: new pgSession({
+      pool: pool,
+      tableName: "session",
+      createTableIfMissing: true,
+    }),
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 app.use("/", indexRouter);
 app.use("/categories", categoriesRouter);
