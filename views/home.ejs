@@ -1,55 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-  <link rel="stylesheet" href="home.css">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-</head>
-<body>
-  <header class="navbar">
-    <div class="logo">
-      <h1><%= user ? `${user.username}` : '' %> 📦</h1>
-    </div>
-    <nav class="nav-links">
-      <a href="/categories">
-        <span class="text">Categories</span>
-        <span class="icon">📋</span>
-      </a>
-      <a href="/items">
-        <span class="text">Items</span>
-        <span class="icon">🛠️</span>
-      </a>
-      <a href="/suppliers">
-        <span class="text">Suppliers</span>
-        <span class="icon">🏭</span>
-      </a>
-    </nav>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="home.css" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo new-container">
+        <h1><%= user ? `${user.username}` : '' %> 📦</h1>
+        <form action="/logout" method="POST">
+          <button type="submit" class="logout-btn">Log out</button>
+        </form>
+      </div>
+      <nav class="nav-links">
+        <a href="/categories">
+          <span class="text">Categories</span>
+          <span class="icon">📋</span>
+        </a>
+        <a href="/items">
+          <span class="text">Items</span>
+          <span class="icon">🛠️</span>
+        </a>
+        <a href="/suppliers">
+          <span class="text">Suppliers</span>
+          <span class="icon">🏭</span>
+        </a>
+      </nav>
+    </header>
 
-  <main class="content">
-    <section id="categories" class="card">
-      <h2>Categories 📋</h2>
-      <p>Manage and organize your inventory categories efficiently.</p>
-      <a href="/categories" class="cta-link">View Categories</a>
-    </section>
+    <main class="content">
+      <section id="categories" class="card">
+        <h2>Categories 📋</h2>
+        <p>Manage and organize your inventory categories efficiently.</p>
+        <a href="/categories" class="cta-link">View Categories</a>
+      </section>
 
-    <section id="items" class="card">       
-      <h2>Items 🛠️</h2>
-      <p>Track and manage individual items in your inventory.</p>
-      <a href="/items" class="cta-link">View Items</a>
-    </section>
+      <section id="items" class="card">
+        <h2>Items 🛠️</h2>
+        <p>Track and manage individual items in your inventory.</p>
+        <a href="/items" class="cta-link">View Items</a>
+      </section>
 
-    <section id="suppliers" class="card">
-      <h2>Suppliers 🏭</h2>
-      <p>Maintain relationships with your trusted suppliers.</p>
-      <a href="/suppliers" class="cta-link">View Suppliers</a>
-    </section>
-  </main>
+      <section id="suppliers" class="card">
+        <h2>Suppliers 🏭</h2>
+        <p>Maintain relationships with your trusted suppliers.</p>
+        <a href="/suppliers" class="cta-link">View Suppliers</a>
+      </section>
+    </main>
 
-  <footer>
-    <p>&copy; 2025 StockFlow. All Rights Reserved.</p>
-  </footer>
-</body>
+    <footer>
+      <p>&copy; 2025 StockFlow. All Rights Reserved.</p>
+    </footer>
+  </body>
 </html>

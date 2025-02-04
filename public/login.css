@@ -100,8 +100,8 @@ p {
 }
 
 .error-message {
-  background-color: #f8d7da;  /* Color de fondo suave */
-  color: #721c24;  /* Color de texto oscuro para el error */
+  background-color: #f8d7da; 
+  color: #721c24;  
   padding: 15px 20px;
   margin-bottom: 20px;
   border-radius: 5px;
@@ -109,9 +109,9 @@ p {
   text-align: center;
   width: 100%;
   max-width: 500px;
-  margin: 10px auto;  /* Centrado horizontal */
+  margin: 10px auto;  
   box-sizing: border-box;
-  border: 1px solid #f5c6cb;  /* Borde de color más suave */
+  border: 1px solid #f5c6cb;  
 }
 
 .error-message p {
