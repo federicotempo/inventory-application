@@ -60,10 +60,9 @@ async function insterItem({ name, category_id, supplier_id, price, quantity }) {
 
 async function insterSupplier({ name, contact_phone, contact_email }) {
   try {
-    await pool.query(
-      "INSERT INTO suppliers (name, contact_phone, contact_email) VALUES ($1, $2, $3)",
-      [name, contact_phone, contact_email]
-    );
+    await prisma.suppliers.create({
+      data: { name, contact_phone, contact_email },
+    });
     console.log("Supplier inserted succesfully!");
   } catch (error) {
     console.error("Error inserting supplier:", error.message);
