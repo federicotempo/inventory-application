@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model categories {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique @db.VarChar(50)
+  description String?
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  updated_at  DateTime? @default(now()) @db.Timestamp(6)
+  items       items[]
+}
+
+model items {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique @db.VarChar(125)
+  category_id Int?
+  supplier_id Int?
+  price       Decimal     @db.Decimal(10, 2)
+  quantity    Int         @default(0)
+  created_at  DateTime?   @default(now()) @db.Timestamp(6)
+  updated_at  DateTime?   @default(now()) @db.Timestamp(6)
+  categories  categories? @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  suppliers   suppliers?  @relation(fields: [supplier_id], references: [id], onUpdate: NoAction)
+
+  @@index([category_id], map: "idx_category_id")
+  @@index([supplier_id], map: "idx_supplier_id")
+}
+
+model session {
+  sid    String   @id
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+}
+
+model suppliers {
+  id            Int       @id @default(autoincrement())
+  name          String    @unique @db.VarChar(50)
+  contact_phone String    @unique @db.VarChar(15)
+  contact_email String    @unique @db.VarChar(75)
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+  updated_at    DateTime? @default(now()) @db.Timestamp(6)
+  items         items[]
+}
+
+model users {
+  id       Int    @id @default(autoincrement())
+  username String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+}
