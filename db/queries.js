@@ -146,11 +146,25 @@ async function searchItems({ searchTerm, limit = 3, offset = 0 }) {
 
 async function searchCategories({ searchTerm, limit = 3, offset = 0 }) {
   try {
-    const result = await pool.query(
-      "SELECT id, name, description FROM categories WHERE name ILIKE $1 ORDER BY updated_at ASC LIMIT $2 OFFSET $3",
-      [`%${searchTerm}%`, limit, offset]
-    );
-    return result.rows;
+    const categories = await prisma.categories.findMany({
+      where: {
+        name: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+      take: limit,
+      skip: offset,
+      select: {
+        id: true,
+        name: true,
+        description: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+    return categories;
   } catch (error) {
     console.error("Error searching categories:", error.message);
     throw error;
