@@ -41,12 +41,22 @@ async function selectItems({ limit = 3, offset = 0 } = {}) {
 
 async function selectSuppliers({ limit = 3, offset = 0 } = {}) {
   try {
-    const suppliers = await pool.query(
-      "SELECT id, name, contact_phone, contact_email FROM suppliers ORDER BY id ASC LIMIT $1 OFFSET $2",
-      [limit, offset]
-    );
-    console.log("Suppliers selected successfully:", suppliers.rows);
-    return suppliers.rows;
+    const suppliers = await prisma.suppliers.findMany({
+      take: limit,
+      skip: offset,
+      select: {
+        id: true,
+        name: true,
+        contact_phone: true,
+        contact_email: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+
+    console.log("Suppliers selected successfully:", suppliers);
+    return suppliers;
   } catch (error) {
     console.error("Error selecting suppliers:", error.message);
     throw error;
