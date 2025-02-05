@@ -1,5 +1,5 @@
 const pool = require("./pool");
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient, Prisma } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
@@ -47,10 +47,15 @@ async function selectSuppliers({ limit = 3, offset = 0 } = {}) {
 
 async function insterItem({ name, category_id, supplier_id, price, quantity }) {
   try {
-    await pool.query(
-      "INSERT INTO items (name, category_id, supplier_id, price, quantity) VALUES ($1, $2, $3, $4, $5)",
-      [name, category_id, supplier_id, price, quantity]
-    );
+    await prisma.items.create({
+      data: {
+        name,
+        category_id: parseInt(category_id, 10),
+        supplier_id: parseInt(supplier_id, 10),
+        price: new Prisma.Decimal(price),
+        quantity: parseInt(quantity, 10),
+      },
+    });
     console.log("Item inserted succesfully!");
   } catch (error) {
     console.error("Error inserting item:", error.message);
