@@ -5,12 +5,20 @@ const prisma = new PrismaClient();
 
 async function selectCategories({ limit = 3, offset = 0 } = {}) {
   try {
-    const categories = await pool.query(
-      "SELECT id, name, description FROM categories ORDER BY id ASC LIMIT $1 OFFSET $2",
-      [limit, offset]
-    );
-    console.log("Categories selected successfully:", categories.rows);
-    return categories.rows;
+    const categories = await prisma.categories.findMany({
+      take: limit,
+      skip: offset,
+      select: {
+        id: true,
+        name: true,
+        description: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+    console.log("Categories selected successfully:", categories);
+    return categories;
   } catch (error) {
     console.error("Error selecting categories:", error.message);
     throw error;
