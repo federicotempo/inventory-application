@@ -1,4 +1,7 @@
 const pool = require("./pool");
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
 
 async function selectCategories({ limit = 3, offset = 0 } = {}) {
   try {
@@ -70,10 +73,9 @@ async function insterSupplier({ name, contact_phone, contact_email }) {
 
 async function insterCategory({ name, description }) {
   try {
-    await pool.query(
-      "INSERT INTO categories (name, description) VALUES ($1, $2)",
-      [name, description]
-    );
+    await prisma.categories.create({
+      data: { name, description },
+    });
     console.log("Category inserted succesfully!");
   } catch (error) {
     console.error("Error inserting category:", error.message);
