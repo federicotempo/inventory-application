@@ -159,11 +159,26 @@ async function searchCategories({ searchTerm, limit = 3, offset = 0 }) {
 
 async function searchSuppliers({ searchTerm, limit = 3, offset = 0 }) {
   try {
-    const result = await pool.query(
-      "SELECT id, name, contact_phone, contact_email FROM suppliers WHERE name ILIKE $1 ORDER BY updated_at ASC LIMIT $2 OFFSET $3",
-      [`%${searchTerm}%`, limit, offset]
-    );
-    return result.rows;
+    const suppliers = await prisma.suppliers.findMany({
+      where: {
+        name: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+      take: limit,
+      skip: offset,
+      select: {
+        id: true,
+        name: true,
+        contact_phone: true,
+        contact_email: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+    return suppliers;
   } catch (error) {
     console.error("Error searching suppliers:", error.message);
     throw error;
