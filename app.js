@@ -29,13 +29,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   expressSession({
     cookie: {
-      maxAge: 7 * 24 * 60 * 60 * 1000, 
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     },
     secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true,
     store: new PrismaSessionStore(new PrismaClient(), {
-      checkPeriod: 2 * 60 * 1000, 
+      checkPeriod: 2 * 60 * 1000,
       dbRecordIdIsSessionId: true,
       dbRecordIdFunction: undefined,
     }),
@@ -54,3 +54,5 @@ app.use("/items", itemsRouter);
 app.listen(PORT, () => {
   console.log(`StockFlow is running on http://localhost:${PORT}`);
 });
+
+module.exports = app;
