@@ -2,7 +2,7 @@
 An inventory management system for a store, developed using Express.js, PostgreSQL, and Prisma ORM, with full CRUD capabilities.
 
 # Live preview
-https://inventory-application-production-a16c.up.railway.app/
+https://inventory-application-production-7b1c.up.railway.app/
 
 # Description
 This application allows users to manage inventory efficiently by handling categories, items, and suppliers. Users can create, read, update, and delete records for each of these entities. The app features a responsive design, ensuring a seamless experience across different devices.
