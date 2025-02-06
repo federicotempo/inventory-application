@@ -11,9 +11,8 @@ async function renderItems(req, res) {
     const categories = await db.selectCategories();
     const suppliers = await db.selectSuppliers();
 
-    const totalResult = await db.countItems();
-    const totalCategories = parseInt(totalResult.rows[0].count);
-    const totalPages = Math.ceil(totalCategories / limit);
+    const totalItems = await db.countItems();
+    const totalPages = Math.ceil(totalItems / limit);
 
     const message = "";
 
@@ -105,8 +104,7 @@ async function searchItems(req, res) {
   try {
     const items = await db.searchItems({ searchTerm, limit, offset });
 
-    const totalResult = await db.countSearchItems({ searchTerm });
-    const totalItems = parseInt(totalResult.rows[0].count);
+    const totalItems = await db.countSearchItems({ searchTerm });
     const totalPages = Math.ceil(totalItems / limit);
 
     const message =

@@ -9,8 +9,7 @@ async function renderCategories(req, res) {
 
     const categories = await db.selectCategories({ limit, offset });
 
-    const totalResult = await db.countCategories();
-    const totalCategories = parseInt(totalResult.rows[0].count);
+    const totalCategories = await db.countCategories();
     const totalPages = Math.ceil(totalCategories / limit);
 
     const message = "";
@@ -77,8 +76,7 @@ async function searchCategories(req, res) {
   try {
     const categories = await db.searchCategories({ searchTerm, page, offset });
 
-    const totalResult = await db.countSearchCategories({ searchTerm });
-    const totalCategories = parseInt(totalResult.rows[0].count);
+    const totalCategories = await db.countSearchCategories({ searchTerm });
     const totalPages = Math.ceil(totalCategories / limit);
 
     const message =

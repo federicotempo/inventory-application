@@ -9,9 +9,8 @@ async function renderSuppliers(req, res) {
 
     const suppliers = await db.selectSuppliers({ limit, offset });
 
-    const totalResult = await db.countSuppliers();
-    const totalCategories = parseInt(totalResult.rows[0].count);
-    const totalPages = Math.ceil(totalCategories / limit);
+    const totalSuppliers = await db.countSuppliers();
+    const totalPages = Math.ceil(totalSuppliers / limit);
 
     const message = "";
 
@@ -92,8 +91,7 @@ async function searchSuppliers(req, res) {
   try {
     const suppliers = await db.searchSuppliers({ searchTerm, page, offset });
 
-    const totalResult = await db.countSearchSuppliers({ searchTerm });
-    const totalSuppliers = parseInt(totalResult.rows[0].count);
+    const totalSuppliers = await db.countSearchSuppliers({ searchTerm });
     const totalPages = Math.ceil(totalSuppliers / limit);
 
     const message =

@@ -1,13 +1,24 @@
 const pool = require("./pool");
+const { PrismaClient, Prisma } = require("@prisma/client");
+
+const prisma = new PrismaClient();
 
 async function selectCategories({ limit = 3, offset = 0 } = {}) {
   try {
-    const categories = await pool.query(
-      "SELECT id, name, description FROM categories ORDER BY id ASC LIMIT $1 OFFSET $2",
-      [limit, offset]
-    );
-    console.log("Categories selected successfully:", categories.rows);
-    return categories.rows;
+    const categories = await prisma.categories.findMany({
+      take: limit,
+      skip: offset,
+      select: {
+        id: true,
+        name: true,
+        description: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+    console.log("Categories selected successfully:", categories);
+    return categories;
   } catch (error) {
     console.error("Error selecting categories:", error.message);
     throw error;
@@ -16,12 +27,22 @@ async function selectCategories({ limit = 3, offset = 0 } = {}) {
 
 async function selectItems({ limit = 3, offset = 0 } = {}) {
   try {
-    const items = await pool.query(
-      "SELECT id, name, category_id, price, quantity, supplier_id, created_at, updated_at FROM items ORDER BY id ASC LIMIT $1 OFFSET $2",
-      [limit, offset]
-    );
-    console.log("Items selected successfully:", items.rows);
-    return items.rows;
+    const items = await prisma.items.findMany({
+      take: limit,
+      skip: offset,
+      select: {
+        id: true,
+        name: true,
+        category_id: true,
+        price: true,
+        quantity: true,
+        supplier_id: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
+    console.log("Items selected successfully:", items);
+    return items;
   } catch (error) {
     console.error("Error selecting items:", error.message);
     throw error;
@@ -30,12 +51,22 @@ async function selectItems({ limit = 3, offset = 0 } = {}) {
 
 async function selectSuppliers({ limit = 3, offset = 0 } = {}) {
   try {
-    const suppliers = await pool.query(
-      "SELECT id, name, contact_phone, contact_email FROM suppliers ORDER BY id ASC LIMIT $1 OFFSET $2",
-      [limit, offset]
-    );
-    console.log("Suppliers selected successfully:", suppliers.rows);
-    return suppliers.rows;
+    const suppliers = await prisma.suppliers.findMany({
+      take: limit,
+      skip: offset,
+      select: {
+        id: true,
+        name: true,
+        contact_phone: true,
+        contact_email: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+
+    console.log("Suppliers selected successfully:", suppliers);
+    return suppliers;
   } catch (error) {
     console.error("Error selecting suppliers:", error.message);
     throw error;
@@ -44,10 +75,15 @@ async function selectSuppliers({ limit = 3, offset = 0 } = {}) {
 
 async function insterItem({ name, category_id, supplier_id, price, quantity }) {
   try {
-    await pool.query(
-      "INSERT INTO items (name, category_id, supplier_id, price, quantity) VALUES ($1, $2, $3, $4, $5)",
-      [name, category_id, supplier_id, price, quantity]
-    );
+    await prisma.items.create({
+      data: {
+        name,
+        category_id: parseInt(category_id, 10),
+        supplier_id: parseInt(supplier_id, 10),
+        price: new Prisma.Decimal(price),
+        quantity: parseInt(quantity, 10),
+      },
+    });
     console.log("Item inserted succesfully!");
   } catch (error) {
     console.error("Error inserting item:", error.message);
@@ -57,10 +93,9 @@ async function insterItem({ name, category_id, supplier_id, price, quantity }) {
 
 async function insterSupplier({ name, contact_phone, contact_email }) {
   try {
-    await pool.query(
-      "INSERT INTO suppliers (name, contact_phone, contact_email) VALUES ($1, $2, $3)",
-      [name, contact_phone, contact_email]
-    );
+    await prisma.suppliers.create({
+      data: { name, contact_phone, contact_email },
+    });
     console.log("Supplier inserted succesfully!");
   } catch (error) {
     console.error("Error inserting supplier:", error.message);
@@ -70,10 +105,9 @@ async function insterSupplier({ name, contact_phone, contact_email }) {
 
 async function insterCategory({ name, description }) {
   try {
-    await pool.query(
-      "INSERT INTO categories (name, description) VALUES ($1, $2)",
-      [name, description]
-    );
+    await prisma.categories.create({
+      data: { name, description },
+    });
     console.log("Category inserted succesfully!");
   } catch (error) {
     console.error("Error inserting category:", error.message);
@@ -83,11 +117,27 @@ async function insterCategory({ name, description }) {
 
 async function searchItems({ searchTerm, limit = 3, offset = 0 }) {
   try {
-    const result = await pool.query(
-      "SELECT id, name, category_id, price, quantity, supplier_id, created_at, updated_at FROM items WHERE name ILIKE $1 ORDER BY updated_at ASC LIMIT $2 OFFSET $3",
-      [`%${searchTerm}%`, limit, offset]
-    );
-    return result.rows;
+    const items = await prisma.items.findMany({
+      where: {
+        name: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+      take: limit,
+      skip: offset,
+      select: {
+        id: true,
+        name: true,
+        category_id: true,
+        price: true,
+        quantity: true,
+        supplier_id: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
+    return items;
   } catch (error) {
     console.error("Error searching items:", error.message);
     throw error;
@@ -96,11 +146,25 @@ async function searchItems({ searchTerm, limit = 3, offset = 0 }) {
 
 async function searchCategories({ searchTerm, limit = 3, offset = 0 }) {
   try {
-    const result = await pool.query(
-      "SELECT id, name, description FROM categories WHERE name ILIKE $1 ORDER BY updated_at ASC LIMIT $2 OFFSET $3",
-      [`%${searchTerm}%`, limit, offset]
-    );
-    return result.rows;
+    const categories = await prisma.categories.findMany({
+      where: {
+        name: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+      take: limit,
+      skip: offset,
+      select: {
+        id: true,
+        name: true,
+        description: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+    return categories;
   } catch (error) {
     console.error("Error searching categories:", error.message);
     throw error;
@@ -109,11 +173,26 @@ async function searchCategories({ searchTerm, limit = 3, offset = 0 }) {
 
 async function searchSuppliers({ searchTerm, limit = 3, offset = 0 }) {
   try {
-    const result = await pool.query(
-      "SELECT id, name, contact_phone, contact_email FROM suppliers WHERE name ILIKE $1 ORDER BY updated_at ASC LIMIT $2 OFFSET $3",
-      [`%${searchTerm}%`, limit, offset]
-    );
-    return result.rows;
+    const suppliers = await prisma.suppliers.findMany({
+      where: {
+        name: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+      take: limit,
+      skip: offset,
+      select: {
+        id: true,
+        name: true,
+        contact_phone: true,
+        contact_email: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+    return suppliers;
   } catch (error) {
     console.error("Error searching suppliers:", error.message);
     throw error;
@@ -122,11 +201,22 @@ async function searchSuppliers({ searchTerm, limit = 3, offset = 0 }) {
 
 async function getItemById(id) {
   try {
-    const result = await pool.query(
-      "SELECT id, name, price, quantity, supplier_id, category_id, created_at, updated_at FROM items WHERE id = $1",
-      [id]
-    );
-    return result.rows[0];
+    const item = await prisma.items.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        quantity: true,
+        supplier_id: true,
+        category_id: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
+    return item;
   } catch (error) {
     console.error("Error getting item by id", error.message);
     throw error;
@@ -138,12 +228,20 @@ async function updateItem(
   { name, category_id, supplier_id, price, quantity }
 ) {
   try {
-    await pool.query(
-      `
-      UPDATE items SET name = $1, category_id = $2, supplier_id = $3, price = $4, quantity = $5, updated_at = NOW()
-      WHERE id = $6`,
-      [name, category_id, supplier_id, price, quantity, id]
-    );
+    const updatedItem = await prisma.items.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        name: name,
+        category_id: parseInt(category_id),
+        supplier_id: parseInt(supplier_id),
+        price: price,
+        quantity: parseInt(quantity),
+        updated_at: new Date(),
+      },
+    });
+    return updatedItem;
   } catch (error) {
     console.error("Error updating item", error.message);
     throw error;
@@ -152,11 +250,17 @@ async function updateItem(
 
 async function getCategoryById(id) {
   try {
-    const result = await pool.query(
-      "SELECT name, description FROM categories WHERE id = $1",
-      [id]
-    );
-    return result.rows[0];
+    const category = await prisma.categories.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+      },
+    });
+    return category;
   } catch (error) {
     console.error("Error getting category by id", error.message);
     throw error;
@@ -165,12 +269,16 @@ async function getCategoryById(id) {
 
 async function updateCategory(id, { name, description }) {
   try {
-    await pool.query(
-      `
-      UPDATE categories SET name = $1, description = $2, updated_at = NOW()
-      WHERE id = $3`,
-      [name, description, id]
-    );
+    const updatedCategory = await prisma.categories.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        name: name,
+        description: description,
+      },
+    });
+    return updatedCategory;
   } catch (error) {
     console.error("Error updating category", error.message);
     throw error;
@@ -179,11 +287,18 @@ async function updateCategory(id, { name, description }) {
 
 async function getSupplierById(id) {
   try {
-    const result = await pool.query(
-      "SELECT name, contact_phone, contact_email FROM suppliers WHERE id = $1",
-      [id]
-    );
-    return result.rows[0];
+    const supplier = await prisma.suppliers.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+      select: {
+        id: true,
+        name: true,
+        contact_phone: true,
+        contact_email: true,
+      },
+    });
+    return supplier;
   } catch (error) {
     console.error("Error getting supplier by id", error.message);
     throw error;
@@ -192,12 +307,17 @@ async function getSupplierById(id) {
 
 async function updateSupplier(id, { name, contact_phone, contact_email }) {
   try {
-    await pool.query(
-      `
-      UPDATE suppliers SET name = $1, contact_phone = $2, contact_email = $3, updated_at = NOW()
-      WHERE id = $4`,
-      [name, contact_phone, contact_email, id]
-    );
+    const updatedSupplier = await prisma.suppliers.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        name: name,
+        contact_phone: contact_phone,
+        contact_email: contact_email,
+      },
+    });
+    return updatedSupplier;
   } catch (error) {
     console.error("Error updating supplier", error.message);
     throw error;
@@ -206,7 +326,11 @@ async function updateSupplier(id, { name, contact_phone, contact_email }) {
 
 async function deleteItem(id) {
   try {
-    await pool.query("DELETE FROM items WHERE id = $1", [id]);
+    await prisma.items.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
   } catch (error) {
     console.error("Error deleting item", error.message);
     throw error;
@@ -215,7 +339,11 @@ async function deleteItem(id) {
 
 async function deleteCategory(id) {
   try {
-    await pool.query("DELETE FROM categories WHERE id = $1", [id]);
+    await prisma.categories.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
   } catch (error) {
     console.error("Error deleting category", error.message);
     throw error;
@@ -224,7 +352,11 @@ async function deleteCategory(id) {
 
 async function deleteSupplier(id) {
   try {
-    await pool.query("DELETE FROM suppliers WHERE id = $1", [id]);
+    await prisma.suppliers.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
   } catch (error) {
     console.error("Error deleting supplier", error.message);
     throw error;
@@ -233,15 +365,16 @@ async function deleteSupplier(id) {
 
 async function countCategories() {
   try {
-    return await pool.query("SELECT COUNT(*) FROM categories");
+    return await prisma.categories.count();
   } catch (error) {
     console.error("Error counting categories", error.message);
     throw error;
   }
 }
+
 async function countSuppliers() {
   try {
-    return await pool.query("SELECT COUNT(*) FROM suppliers");
+    return await prisma.suppliers.count();
   } catch (error) {
     console.error("Error counting suppliers", error.message);
     throw error;
@@ -250,7 +383,7 @@ async function countSuppliers() {
 
 async function countItems() {
   try {
-    return await pool.query("SELECT COUNT(*) FROM items");
+    return await prisma.items.count();
   } catch (error) {
     console.error("Error counting items", error.message);
     throw error;
@@ -259,13 +392,14 @@ async function countItems() {
 
 async function countSearchItems({ searchTerm } = {}) {
   try {
-    const query = `
-      SELECT COUNT(*) 
-      FROM items 
-      WHERE name ILIKE $1
-    `;
-    const values = [`%${searchTerm}%`];
-    const result = await pool.query(query, values);
+    const result = await prisma.items.count({
+      where: {
+        name: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+    });
     return result;
   } catch (error) {
     console.error("Error counting search items:", error.message);
@@ -275,13 +409,14 @@ async function countSearchItems({ searchTerm } = {}) {
 
 async function countSearchCategories({ searchTerm } = {}) {
   try {
-    const query = `
-      SELECT COUNT(*) 
-      FROM categories
-      WHERE name ILIKE $1
-    `;
-    const values = [`%${searchTerm}%`];
-    const result = await pool.query(query, values);
+    const result = await prisma.categories.count({
+      where: {
+        name: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+    });
     return result;
   } catch (error) {
     console.error("Error counting search categories:", error.message);
@@ -291,13 +426,14 @@ async function countSearchCategories({ searchTerm } = {}) {
 
 async function countSearchSuppliers({ searchTerm } = {}) {
   try {
-    const query = `
-      SELECT COUNT(*) 
-      FROM suppliers
-      WHERE name ILIKE $1
-    `;
-    const values = [`%${searchTerm}%`];
-    const result = await pool.query(query, values);
+    const result = await prisma.suppliers.count({
+      where: {
+        name: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+    });
     return result;
   } catch (error) {
     console.error("Error counting search suppliers:", error.message);
@@ -307,9 +443,18 @@ async function countSearchSuppliers({ searchTerm } = {}) {
 
 async function getAllCategories() {
   try {
-    const query = `SELECT id, name, description FROM categories ORDER BY id ASC`;
-    const result = await pool.query(query);
-    return result.rows;
+    const categories = await prisma.categories.findMany({
+      select: {
+        id: true,
+        name: true,
+        description: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+
+    return categories;
   } catch (error) {
     console.error("Error getting all categories:", error.message);
     throw error;
@@ -318,13 +463,19 @@ async function getAllCategories() {
 
 async function getAllSuppliers() {
   try {
-    const query = `
-      SELECT id, name, contact_phone, contact_email 
-      FROM suppliers 
-      ORDER BY id ASC
-    `;
-    const result = await pool.query(query);
-    return result.rows;
+    const suppliers = await prisma.suppliers.findMany({
+      select: {
+        id: true,
+        name: true,
+        contact_phone: true,
+        contact_email: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+
+    return suppliers;
   } catch (error) {
     console.error("Error getting all suppliers:", error.message);
     throw error;
@@ -333,10 +484,12 @@ async function getAllSuppliers() {
 
 async function insertUser(username, password) {
   try {
-    await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
-      username,
-      password,
-    ]);
+    await prisma.users.create({
+      data: {
+        username: username,
+        password: password,
+      },
+    });
     console.log("User inserted succesfully!");
   } catch (error) {
     console.error("Error creating user", error.message);
@@ -346,12 +499,13 @@ async function insertUser(username, password) {
 
 async function checkUser(username) {
   try {
-    const query = `
-   SELECT 1 FROM users WHERE username = $1;
-  `;
+    const user = await prisma.users.findUnique({
+      where: {
+        username: username,
+      },
+    });
 
-    const result = await pool.query(query, [username]);
-    return result.rows.length;
+    return user ? 1 : 0;
   } catch (error) {
     console.error("Error checking user", error.message);
     throw error;
