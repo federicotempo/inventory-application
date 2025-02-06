@@ -364,15 +364,16 @@ async function deleteSupplier(id) {
 
 async function countCategories() {
   try {
-    return await pool.query("SELECT COUNT(*) FROM categories");
+    return await prisma.categories.count();
   } catch (error) {
     console.error("Error counting categories", error.message);
     throw error;
   }
 }
+
 async function countSuppliers() {
   try {
-    return await pool.query("SELECT COUNT(*) FROM suppliers");
+    return await prisma.suppliers.count();
   } catch (error) {
     console.error("Error counting suppliers", error.message);
     throw error;
@@ -381,7 +382,7 @@ async function countSuppliers() {
 
 async function countItems() {
   try {
-    return await pool.query("SELECT COUNT(*) FROM items");
+    return await prisma.items.count();
   } catch (error) {
     console.error("Error counting items", error.message);
     throw error;
