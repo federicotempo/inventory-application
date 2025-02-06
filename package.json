@@ -4,7 +4,8 @@
   "description": "A CRUD-based inventory management app for an imaginary store, built with Express.js and PostgreSQL.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
