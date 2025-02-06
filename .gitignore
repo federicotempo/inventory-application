@@ -132,3 +132,5 @@ dist
 .vscode
 
 postgreSQL.session.sql
+
+/prisma/migrations
