@@ -1,4 +1,3 @@
-const pool = require("./pool");
 const { PrismaClient, Prisma } = require("@prisma/client");
 
 const prisma = new PrismaClient();
