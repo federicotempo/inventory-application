@@ -391,13 +391,14 @@ async function countItems() {
 
 async function countSearchItems({ searchTerm } = {}) {
   try {
-    const query = `
-      SELECT COUNT(*) 
-      FROM items 
-      WHERE name ILIKE $1
-    `;
-    const values = [`%${searchTerm}%`];
-    const result = await pool.query(query, values);
+    const result = await prisma.items.count({
+      where: {
+        name: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+    });
     return result;
   } catch (error) {
     console.error("Error counting search items:", error.message);
@@ -407,13 +408,14 @@ async function countSearchItems({ searchTerm } = {}) {
 
 async function countSearchCategories({ searchTerm } = {}) {
   try {
-    const query = `
-      SELECT COUNT(*) 
-      FROM categories
-      WHERE name ILIKE $1
-    `;
-    const values = [`%${searchTerm}%`];
-    const result = await pool.query(query, values);
+    const result = await prisma.categories.count({
+      where: {
+        name: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+    });
     return result;
   } catch (error) {
     console.error("Error counting search categories:", error.message);
@@ -423,13 +425,14 @@ async function countSearchCategories({ searchTerm } = {}) {
 
 async function countSearchSuppliers({ searchTerm } = {}) {
   try {
-    const query = `
-      SELECT COUNT(*) 
-      FROM suppliers
-      WHERE name ILIKE $1
-    `;
-    const values = [`%${searchTerm}%`];
-    const result = await pool.query(query, values);
+    const result = await prisma.suppliers.count({
+      where: {
+        name: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+    });
     return result;
   } catch (error) {
     console.error("Error counting search suppliers:", error.message);
