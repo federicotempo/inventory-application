@@ -228,12 +228,20 @@ async function updateItem(
   { name, category_id, supplier_id, price, quantity }
 ) {
   try {
-    await pool.query(
-      `
-      UPDATE items SET name = $1, category_id = $2, supplier_id = $3, price = $4, quantity = $5, updated_at = NOW()
-      WHERE id = $6`,
-      [name, category_id, supplier_id, price, quantity, id]
-    );
+    const updatedItem = await prisma.items.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        name: name,
+        category_id: parseInt(category_id),
+        supplier_id: parseInt(supplier_id),
+        price: price,
+        quantity: parseInt(quantity),
+        updated_at: new Date(),
+      },
+    });
+    return updatedItem;
   } catch (error) {
     console.error("Error updating item", error.message);
     throw error;
@@ -247,6 +255,7 @@ async function getCategoryById(id) {
         id: parseInt(id),
       },
       select: {
+        id: true,
         name: true,
         description: true,
       },
@@ -260,12 +269,16 @@ async function getCategoryById(id) {
 
 async function updateCategory(id, { name, description }) {
   try {
-    await pool.query(
-      `
-      UPDATE categories SET name = $1, description = $2, updated_at = NOW()
-      WHERE id = $3`,
-      [name, description, id]
-    );
+    const updatedCategory = await prisma.categories.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        name: name,
+        description: description,
+      },
+    });
+    return updatedCategory;
   } catch (error) {
     console.error("Error updating category", error.message);
     throw error;
@@ -276,9 +289,9 @@ async function getSupplierById(id) {
   try {
     const supplier = await prisma.suppliers.findUnique({
       where: {
-        id: parseInt(id),  
+        id: parseInt(id),
       },
-      select: {  
+      select: {
         name: true,
         contact_phone: true,
         contact_email: true,
@@ -293,12 +306,17 @@ async function getSupplierById(id) {
 
 async function updateSupplier(id, { name, contact_phone, contact_email }) {
   try {
-    await pool.query(
-      `
-      UPDATE suppliers SET name = $1, contact_phone = $2, contact_email = $3, updated_at = NOW()
-      WHERE id = $4`,
-      [name, contact_phone, contact_email, id]
-    );
+    const updatedSupplier = await prisma.suppliers.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        name: name,
+        contact_phone: contact_phone,
+        contact_email: contact_email,
+      },
+    });
+    return updatedSupplier;
   } catch (error) {
     console.error("Error updating supplier", error.message);
     throw error;
