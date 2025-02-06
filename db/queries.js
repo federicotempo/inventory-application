@@ -442,9 +442,18 @@ async function countSearchSuppliers({ searchTerm } = {}) {
 
 async function getAllCategories() {
   try {
-    const query = `SELECT id, name, description FROM categories ORDER BY id ASC`;
-    const result = await pool.query(query);
-    return result.rows;
+    const categories = await prisma.categories.findMany({
+      select: {
+        id: true,
+        name: true,
+        description: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+
+    return categories;
   } catch (error) {
     console.error("Error getting all categories:", error.message);
     throw error;
@@ -453,13 +462,19 @@ async function getAllCategories() {
 
 async function getAllSuppliers() {
   try {
-    const query = `
-      SELECT id, name, contact_phone, contact_email 
-      FROM suppliers 
-      ORDER BY id ASC
-    `;
-    const result = await pool.query(query);
-    return result.rows;
+    const suppliers = await prisma.suppliers.findMany({
+      select: {
+        id: true,
+        name: true,
+        contact_phone: true,
+        contact_email: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+
+    return suppliers;
   } catch (error) {
     console.error("Error getting all suppliers:", error.message);
     throw error;
