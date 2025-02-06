@@ -292,6 +292,7 @@ async function getSupplierById(id) {
         id: parseInt(id),
       },
       select: {
+        id: true,
         name: true,
         contact_phone: true,
         contact_email: true,
