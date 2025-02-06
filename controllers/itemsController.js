@@ -104,8 +104,7 @@ async function searchItems(req, res) {
   try {
     const items = await db.searchItems({ searchTerm, limit, offset });
 
-    const totalResult = await db.countSearchItems({ searchTerm });
-    const totalItems = parseInt(totalResult.rows[0].count);
+    const totalItems = await db.countSearchItems({ searchTerm });
     const totalPages = Math.ceil(totalItems / limit);
 
     const message =

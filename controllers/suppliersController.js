@@ -91,8 +91,7 @@ async function searchSuppliers(req, res) {
   try {
     const suppliers = await db.searchSuppliers({ searchTerm, page, offset });
 
-    const totalResult = await db.countSearchSuppliers({ searchTerm });
-    const totalSuppliers = parseInt(totalResult.rows[0].count);
+    const totalSuppliers = await db.countSearchSuppliers({ searchTerm });
     const totalPages = Math.ceil(totalSuppliers / limit);
 
     const message =
