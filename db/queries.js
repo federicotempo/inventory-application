@@ -325,7 +325,11 @@ async function updateSupplier(id, { name, contact_phone, contact_email }) {
 
 async function deleteItem(id) {
   try {
-    await pool.query("DELETE FROM items WHERE id = $1", [id]);
+    await prisma.items.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
   } catch (error) {
     console.error("Error deleting item", error.message);
     throw error;
@@ -334,7 +338,11 @@ async function deleteItem(id) {
 
 async function deleteCategory(id) {
   try {
-    await pool.query("DELETE FROM categories WHERE id = $1", [id]);
+    await prisma.categories.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
   } catch (error) {
     console.error("Error deleting category", error.message);
     throw error;
@@ -343,7 +351,11 @@ async function deleteCategory(id) {
 
 async function deleteSupplier(id) {
   try {
-    await pool.query("DELETE FROM suppliers WHERE id = $1", [id]);
+    await prisma.suppliers.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
   } catch (error) {
     console.error("Error deleting supplier", error.message);
     throw error;
