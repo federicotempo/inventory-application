@@ -9,8 +9,7 @@ async function renderCategories(req, res) {
 
     const categories = await db.selectCategories({ limit, offset });
 
-    const totalResult = await db.countCategories();
-    const totalCategories = parseInt(totalResult.rows[0].count);
+    const totalCategories = await db.countCategories();
     const totalPages = Math.ceil(totalCategories / limit);
 
     const message = "";
