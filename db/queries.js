@@ -483,10 +483,12 @@ async function getAllSuppliers() {
 
 async function insertUser(username, password) {
   try {
-    await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
-      username,
-      password,
-    ]);
+    await prisma.users.create({
+      data: {
+        username: username,
+        password: password,
+      },
+    });
     console.log("User inserted succesfully!");
   } catch (error) {
     console.error("Error creating user", error.message);
