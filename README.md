@@ -1,5 +1,5 @@
 # inventory-application
-A CRUD-based inventory management app for a store, built with Express.js and PostgreSQL.
+A CRUD-based inventory management app for a store, built with Express.js, PostgreSQL and PRISMA ORM.
 
 # Live preview
 https://inventory-application-production-a16c.up.railway.app/
