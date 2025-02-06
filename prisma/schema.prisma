@@ -32,10 +32,11 @@ model items {
   @@index([supplier_id], map: "idx_supplier_id")
 }
 
-model session {
-  sid    String   @id
-  sess   Json     @db.Json
-  expire DateTime @db.Timestamp(6)
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   
+  expiresAt   DateTime
 }
 
 model suppliers {
