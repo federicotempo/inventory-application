@@ -8,8 +8,8 @@ async function renderItems(req, res) {
     const offset = (page - 1) * limit;
 
     const items = await db.selectItems({ limit, offset });
-    const categories = await db.selectCategories();
-    const suppliers = await db.selectSuppliers();
+    const categories = await db.getAllCategories();
+    const suppliers = await db.getAllSuppliers();
 
     const totalItems = await db.countItems();
     const totalPages = Math.ceil(totalItems / limit);
@@ -33,8 +33,8 @@ async function renderItems(req, res) {
 
 async function renderForm(req, res) {
   try {
-    const categories = await db.selectCategories();
-    const suppliers = await db.selectSuppliers();
+    const categories = await db.getAllCategories();
+    const suppliers = await db.getAllSuppliers();
 
     res.render("form_item", { categories, suppliers, user: req.user });
   } catch (error) {
@@ -127,8 +127,8 @@ async function searchItems(req, res) {
 
 async function renderUpdateItem(req, res) {
   const { id } = req.params;
-  const categories = await db.selectCategories();
-  const suppliers = await db.selectSuppliers();
+  const categories = await db.getAllCategories();
+  const suppliers = await db.getAllSuppliers();
 
   try {
     const item = await db.getItemById(id);
