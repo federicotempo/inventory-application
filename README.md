@@ -1,5 +1,5 @@
 # inventory-application
-An inventory management system for a store, developed using Express.js, PostgreSQL, and Prisma ORM, with full CRUD capabilities.
+An inventory management system for a store, developed using Express.js, PostgreSQL, and Prisma ORM, following the MVC architecture with full CRUD capabilities.
 
 # Live preview
 https://inventory-application-production-7b1c.up.railway.app/
